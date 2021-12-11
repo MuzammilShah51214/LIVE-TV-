@@ -1,0 +1,157 @@
+<style>
+.nt{
+    height:70;
+    width:70;
+    border-radius:2px;
+    top:0;
+}
+.cen{
+position:relative ;
+color:white;
+width:100%;
+height:75px;
+top:1%;
+left:4px;
+
+}
+
+.centered{
+font-size:16px;
+font-weight:normal;
+    position:absolute ;
+    top:-22px;
+    left:27%;
+    padding:0;
+    }
+
+ .cent{
+font-size:14.5px;
+font-weight:normal ;
+    position:absolute ;
+    top:9px;
+    left:27%;
+    padding:0;
+    }
+.dot {
+  height: 9px;
+  width: 9px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+  left:27%;
+}
+
+   
+
+
+
+
+
+
+</style>
+  </head> 
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+
+
+</script>
+<style>
+	body{padding:0;
+Margin:0;}
+	
+	</style><hr>
+<video controls="" id="plr" width="100%" height="203"></video>
+<source src="" type="video/m3u8">
+<script type="text/javascript">
+
+
+	$(document).ready(function(){
+
+
+
+		$.ajax({
+
+    	url: 'https://cdn2.mjunoon.tv:9191/v2/embed-player-url',
+
+    	type: 'post',
+
+    	data: {
+
+    	    slug:{'slug':'8xm-live'}
+    	},
+
+    	success: function(result) {
+
+
+
+var str = result.data.live_stream_url.replace(/cdn6|cdn4|cdn7/g,'cdn5'); 
+
+var src = str.replace(/8XM-131/g,'131M');
+ console.log(src);
+
+            
+var vid = document.getElementById("plr");
+vid.src=src;
+            
+            }
+            
+            
+            })
+            });
+         
+
+
+
+
+
+
+  
+</script>
+
+
+
+<div class="cen">
+        <img class="nt" src="
+        https://srv2.jazztv.pk/jazzlive/uploads/channels/8xm-Logo.png
+        ">
+<h5 class="centered">8XM MUSIC</h5>
+<h5 class="cent"><span class="dot"></span>  Watching on LIVE-TV </h5>
+
+  </div>
+</body>
+ </html>
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
+<body style="background-color:#FE019A;">
+
+
+<p style="display: none" id="adjust">30</p>
+
+
+<div style="font-weight: bold; border:border-radius: 100%; color: gold; font-size: 0px; position: fixed; top: 
+20px;margin-left: 10px;margin-right: 0px;">
+
+<h4 class="animate"> <font size="1"><div><span style="color:#ff0000;">L</span><span style="color:#ff7f00;">I</span><span style="color:#ffff00;">V</span><span style="color:#80ff00;">E</span><span style="color:#00ff00;">-</span><span style="color:#00ffff;">T</span><span style="color:#02CCFE;">V</span></h4>
+</div>
+   </h4>
+  
+
+
