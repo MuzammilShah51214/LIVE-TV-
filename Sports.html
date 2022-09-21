@@ -1,0 +1,1091 @@
+   
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muzammil-Shah-TV-Video Player</title>
+  <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css">
+  <script type='text/javascript' src="https://cdn.jsdelivr.net/npm/afterglowplayer@1/dist/afterglow.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+</script>
+</head>
+
+
+<STYLE>
+.buttoncontrols1 { display: inline-block; padding: 6px 7px; font-size: 12px; background: none; } .button5 { border-radius: 4px; box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2), 0 4px 4px 0 rgba(0,0,0,0.19); background-color: none; color: white; border: 3px solid red; }
+
+ .buttoncotrols1:hover { background-color: none; font-size: 5px; } button:active { background-color: none; box-shadow: #666; transform: translateY(2px); } button { background-color: none; /* Green */ border: none; color: none; padding: 3px 3px; text-align: center; text-decoration: none; display: inline-block; font-size: 10px; margin: 4px; 4px; cursor: pointer; } </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <STYLE>
+    .button{
+        border-radius: 10% ;border-color:#FF0577A;  padding: 5px; margin: -12px; height: 140px; width: 108px;
+    }
+  
+    
+ 
+
+
+
+
+
+
+  
+ 
+  background-size: 100%  100%";
+  margin: 5Px;
+color: #fff;
+
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+
+  
+  
+   
+
+
+.button2 {
+    width: 80%;
+  font-size: 20px;
+    background-color: #B60000; 
+    color: white; 
+    border: 0px solid #222;
+  border-radius: 5Px;
+}
+
+
+
+    
+
+
+
+
+.zoom {
+
+  padding: 5px;
+  transition: transform .2s;
+  width: 100px;
+  height: 130px;
+  margin: 0 auto;
+  
+}
+
+
+
+          
+   
+.buttoncontrols1 {
+  display: inline-block;
+  padding: 5px 7px;
+  font-size: 10px;
+  
+}
+
+
+
+    
+    
+    
+
+
+
+
+
+
+
+
+.container {
+  width:100%;
+  margin:0 auto;
+}
+input[type="radio"] {
+    display:none;
+}
+label {
+ 
+  float:left;
+  text-align:center;
+  background:#ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  color:#222222;
+  padding:0.5%;
+  margin:0.5%;
+  margin-bottom:30px;
+  cursor:pointer;
+}
+
+
+
+
+
+.filterDiv {
+  
+  
+
+  text-align: center;
+  margin: 2px;
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.container {
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+
+
+
+
+
+
+
+.myButton {
+    -moz-box-shadow: 0px 1px 0px 0px #fff6af;
+    -webkit-box-shadow: 0px 1px 0px 0px #fff6af;
+    box-shadow: 0px 1px 0px 0px #fff6af;
+    
+   
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+    
+    
+  
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+    border-radius:6px;
+    background: url('https://i.pinimg.com/736x/96/80/b5/9680b52765fe9d6cbcc267e1224b89a3.jpg');
+    display:inline-block;
+    cursor:pointer;
+    color:#FDFDFE;
+    font-family:Arial;
+    font-size:13px;
+    font-weight:bold;
+    Margin: 1Px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #FDFDFE;
+}
+
+
+
+
+
+
+
+
+
+
+  .myButton:hover {
+    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #070D0D), color-stop(1, #AD0AFD)); 
+    
+    
+    
+    background-color:#F70D1A;
+}
+.myButton:active {
+    position:relative;
+    top:1px;
+}
+
+        
+
+
+    
+
+
+
+
+
+
+
+
+</style>
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+      
+      
+
+
+
+
+
+
+      <h1 style="text-align: center; padding-top: 70%;"><span style="color: #ff0000;"><span style="color:#FFFFFF;"></span>      
+
+
+<div Width="90%" class="container">
+
+
+
+
+
+
+
+
+<div style="float: left;" class="filterDiv PAKISTAN"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/us1new/asports/playlist.m3u8">
+
+<img id="imageField" class="Button border" name="imageField"
+src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTRwFSP9EHmAr5ST2O12ZsbBlgJcD7Uo-SBw&usqp=CAU"alt"A SPORTS" /> </button>  </div>
+
+
+
+
+
+
+<div style="float: left;" class="filterDiv PAKISTAN"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/123!@paki/ptvsports/playlist.m3u8">
+ <img id="imageField" class="Button border"  name="imageField" src="https://i.dawn.com/primary/2020/07/5f07fdff9d932.jpg" alt="PTV SPORTS"></button>  </div>
+ 
+ 
+ <div style="float: left;" class="filterDiv UK"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/uk/skysportscrickethd_trans/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXdAwGzRj6aDaNrjyEgXVxdd1Qw8Z5MAxWUg&usqp=CAU
+ "alt"SKY sports cricket HD " /></a></button>  </div>
+ 
+ 
+ 
+ <div style="float: left;" class="filterDiv USA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/usa/willowhd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkAAsjJSMEuRQxWqs2g3Y44ZLUAy5Xpfrskw&usqp=CAU
+ "alt"willow HD" /></a></button>  </div>
+
+ 
+ 
+ 
+ 
+ 
+ <div style="float: left;" class="filterDiv PAKISTAN"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/123!@paki/tensports/playlist.m3u8">
+ <img id="imageField" class="Button border"  name="imageField" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0QsAE9LOV1ju1NG2QOozWAG7f-AaIB_beAg&usqp=CAU " alt="tensports"> </button>  </div>
+ 
+ 
+ 
+ 
+ 
+ 
+ <div style="float: left;" class="filterDiv PAKISTAN"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/123!@paki/geosuper/playlist.m3u8">
+ <img id="imageField" class="Button border"  name="imageField" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTKzQp5IuZo2JjZZqzopau6P5b2tG2JkNsOdQ&usqp=CAU" alt="GEO SUPER"> </button>  </div>
+ 
+
+<div style="float: left;" class="filterDiv INDIA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/indsafe/starsports1/playlist.m3u8">
+ <img id="imageField" class="Button border"  name="imageField" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScnTbu2s2JGk5X0gEvCdUZWvYMJXjFKEXjsw&usqp=CAU" alt="STAR SPORTS 1"> </button>  </div>
+
+<div style="float: left;" class="filterDiv INDIA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/indsafe/starsports2/playlist.m3u8">
+ <img id="imageField" class="Button border"  name="imageField" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTk2popP2rJ31aEcgcHgrpzLeJsOtMi9VTxFA&usqp=CAU" alt="STAR SPORTS 2"> </button>  </div>
+
+<div style="float: left;" class="filterDiv INDIA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/indsafe/starsportsselect1/playlist.m3u8">
+ <img id="imageField" class="Button border"  name="imageField" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS5LLjYzaIalSIqgiuksAkcRNAflAXrG7Yww&usqp=CAU" alt="STAR SPORTS SELECT 1"> </button>  </div>
+
+
+<div style="float: left;" class="filterDiv INDIA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/indsafe/starsportsselect2/playlist.m3u8">
+ <img id="imageField" class="Button border"  name="imageField" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJG3oMRre0pAeSHpm97WBCda3GrWfkmFOxIg&usqp=CAU" alt="STAR SPORTS SELECT 2"> </button>  </div>
+
+<div style="float: left;" class="filterDiv INDIA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/ind2/sonysixhd/playlist.m3u8">
+ <img id="imageField" class="Button border" name="imageField"
+src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_HDvkUB22SDs7M8qlzNro114CzkRovoqNSA&usqp=CAU"alt"SONY SIX HD" /> </button>  </div>
+
+
+<div style="float: left;" class="filterDiv INDIA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/ind2/sonyten1hd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSl5Ord7WjvH-y8u-SH6WwqD0FS1nQR9IXvKg&usqp=CAU"alt"sony ten 1"/> </button>  </div>
+
+<div style="float: left;" class="filterDiv INDIA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/ind2/sonyten2hd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7jjkgOdZIXqzahiUjpnL_Fu4LAug7G_QLOA&usqp=CAU"alt"sony ten 2"/> </button>  </div>
+
+
+<div style="float: left;" class="filterDiv INDIA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/ind1/ten3hd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlRC-wEWrgtANbntrgjvDBN-9EYiJ7C5CKNg&usqp=CAU"alt"sony ten 3"/> </button>  </div>
+
+
+
+
+
+
+
+
+<div style="float: left;" class="filterDiv INDIA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/ind2/ddsports/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src=" https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR3FsVj8iYu2O0mrwQHhD3HxvFA4LkZeCc-MQ&usqp=CAU "alt"DD SPORTS " /></a></button>  </div>
+
+
+
+
+
+
+<div style="float: left;" class="filterDiv UAE"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/arb/aspor/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src=" https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA8SGJFrxIN9ohWRvuQtDrldf9drz0DJSe7Q&usqp=CAU "alt"D SPORTS HD " /></a></button>  </div>
+
+
+
+
+
+
+
+
+
+
+<div style="float: left;" class="filterDiv ARAB"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/arb/beinsports1/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUnyRnl6LeB7El-1VO51Q4MgyXfzZnGsL4IA&usqp=CAU
+ "alt"beingsports 1 hd" /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv ARAB"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/arb/beinsports2/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_U7a9DpWrgLIeR17JvW9PgUrvipm__Zn1Pg&usqp=CAU
+ "alt"beingsports 2 hd" /></a></button>  </div>
+
+<div style="float: left;" class="filterDiv ARAB"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/arb/beinsports3/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://cdn-0.tvprofil.com/img/kanali-logo/bein-sports-HD3.png
+ "alt"beingsports 3 hd" /></a></button>  </div>
+
+
+
+
+
+<div style="float: left;" class="filterDiv UAE"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/ptt/benficatv1/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdVOf7s2qPCdww_4YQijRP8JvQ3mqYVy6CSQ&usqp=CAU
+ "alt"benfica tv" /></a></button>  </div>
+
+
+
+<div style="float: left;" class="filterDiv UK"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/uk/attherace/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSt0pAivAkq9FydnI1clhesI35965L8_UF26A&usqp=CAU
+ "alt"A THE RACING" /></a></button>  </div>
+
+
+
+
+<div style="float: left;" class="filterDiv UK"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/uk2safe/boxnation/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBDlmgWwhgvklJqIWutkiPxBCzjbe_3gEKfQ&usqp=CAU
+ "alt"box nation" /></a></button>  </div>
+
+
+
+
+
+
+<div style="float: left;" class="filterDiv UK"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/uk/eirsports1/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuf0eiZR95nkP2j3AnO_pQyCPJVdi8XNN3BQ&usqp=CAU
+ "alt"AIR SPORTS " /></a></button>  </div>
+
+
+
+<div style="float: left;" class="filterDiv USA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/usa/espnuhd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT7xbA9W14DG-sOhLKctIGfV3b___xgkA_7Q&usqp=CAU
+ "alt"ESPN USA" /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv USA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/usa/espn2hd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaev3WThsqFhDiDStiV8JP_bWUvJcpNvgEzQ&usqp=CAU
+ "alt"ESPN 2 HD" /></a></button>  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="float: left;" class="filterDiv UK"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/uk/britisheurosports/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9JRfGrOaxmXyDurJU1KONrBBV0YWz19esYg&usqp=CAU
+ "alt"eurosports 1 hd " /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv UK"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/uk/britisheurosports2/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRggP7MoJYWGzT5Ku7ycffhC_jD8iQMneyr1w&usqp=CAU
+ "alt"eurosports 2 hd " /></a></button>  </div>
+
+
+
+
+<div style="float: left;" class="filterDiv USA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/usa/fightnetwork/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTafXWn0VgMSyijaRSPiyJ5iiJS2cAu2B1d5w&usqp=CAU
+ "alt"fight network" /></a></button>  </div>
+
+
+
+
+
+
+<div style="float: left;" class="filterDiv USA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/usa/foxsports1/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpqEAt4BNGHX99DqK9ZqhZmdpTVbJCK1Nu-Q&usqp=CAU
+ "alt"FS1 " /></a></button>  </div>
+
+
+
+ 
+
+
+
+
+<div style="float: left;" class="filterDiv ARAB"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/arb/mbc1/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsRpUPrGpOQu1IBDR5nlnU0WZ5txNXx-3-Rg&usqp=CAU
+ "alt"MBC 2" /></a></button>  </div>
+
+
+
+
+<div style="float: left;" class="filterDiv ARAB"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/arb/mbc2/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpYJh41r5mRnSBjOwRUqIqxu4KNdhCloaANA&usqp=CAU
+ "alt"MBC 2" /></a></button>  </div>
+
+
+
+
+
+
+
+
+
+
+<div style="float: left;" class="filterDiv ARAB"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/arb/mbc3/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLQp-MxBRIkcb5vHtqtWw7fCzEmhTgdVNkbg&usqp=CAU "alt"MBC3" /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv ARAB"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/arb/mbc4/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3DnmUSp1kEUNKqmOUO2icSYIfXe_BPGWqnQ&usqp=CAU "alt"MBC4" /></a></button>  </div>
+
+
+
+
+
+
+
+
+<div style="float: left;" class="filterDiv UK"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/uk/mutv/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUCx8H_DDODmUzklCs3tzZJWWEz3vTIxsZmw&usqp=CAU
+ "alt"MUTV" /></a></button>  </div>
+
+
+
+<div style="float: left;" class="filterDiv USA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/usa/nbahd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTs8Y1gkujDPDTw8cgJiId-MWZiuoh2jI5tQ&usqp=CAU
+ "alt"NBA HD " /></a></button>  </div>
+
+
+
+
+<div style="float: left;" class="filterDiv UK"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/uk/nbcgolf/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSa49ve8DRUvsd1JxSWDFrogjw6EiKKX49CLQ&usqp=CAU
+ "alt"NBC GOLF " /></a></button>  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="float: left;" class="filterDiv USA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/usa/nflnetwork/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvTGSB8G-X4MYL9WMW1yeiAy8P528vuxZ0Og&usqp=CAU
+ "alt"NFL NETWORK" /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv USA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/usa/nhlnetwork/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6ttMvuMFWX7Qzbekc1-GTfuM0COoFHb4Jrw&usqp=CAU
+ "alt"NHL NETWORK" /></a></button>  </div>
+
+
+
+
+
+<div style="float: left;" class="filterDiv UK"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/uk2/premiersports/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWKU8Ziv8V7WfNY-sV-vscjw8WOXuH7jvKVA&usqp=CAU
+ "alt"premier sports 1" /></a></button>  </div>
+
+
+
+
+<div style="float: left;" class="filterDiv ARAB"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/arb/sspor/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnkJ9pcvyGVNCEaUcy-T6AW4NW29M2LYJQgw&usqp=CAU
+ "alt"S SPORTS TV " /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv UAE"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/ger/skysport1hd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWx9sh8E80y9uIKfQqbWcWHI15apgOOdMuQQ&usqp=CAU
+ "alt"SKY SPORTS 1 HD " /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv UAE"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/ger/skysport2hd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZBNtx8B2NRSmm8LceR5MbbgTNsgGbSUV8Og&usqp=CAU
+ "alt"SKY SPORTS 2 HD " /></a></button>  </div>
+
+
+
+
+
+
+<div style="float: left;" class="filterDiv UK"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/uk/skysportsf1hd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS09i9-hY0le9-qBH-2lAVlh4x0r2P1Ft-OSg&usqp=CAU
+ "alt"sky sports f1 hd" /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv UK"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/uk/skysportsfootballhd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIHwi5Ao_Mz6SNCW79wvST2pTvBmNz5iLVIw&usqp=CAU
+ "alt" sky sports footbal hd" /></a></button>  </div>
+
+
+
+<div style="float: left;" class="filterDiv UK"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/uk2/skysportsgolfhd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDVh1C--RmNcRFH2guMQuqBFwPZrrykyVB_A&usqp=CAU
+ "alt" sky soorts golf " /></a></button>  </div>
+ 
+ 
+ 
+
+<div style="float: left;" class="filterDiv UK"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/uk2/skysportsactionhd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbD_Lkv8oSKNpCFus-4TJoymK4MAnTTwTJ3w&usqp=CAU
+ "alt"SKY SPORTS ACTION" /></a></button>  </div>
+
+
+
+
+
+<div style="float: left;" class="filterDiv UK"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/uk2/skysportsmixhd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1oSyyIM-8LNfQQlE7dVE4HsrZZNHKB1v9Bg&usqp=CAU
+ "alt"sky sports mix " /></a></button>  </div>
+
+
+
+
+
+
+
+
+<div style="float: left;" class="filterDiv UAE"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/ptt/sporttv1hd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH0mokLK74Wf9_QNmtKw0yvG1ePyhQIAXf1g&usqp=CAU
+ "alt"SPORT TV 1 HD " /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv UAE"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/ptt/sporttv2hd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWmheYgeTfpBXy7Qm0bRtmhIy3RKdebUCfcA&usqp=CAU
+ "alt"SPORT TV 2 HD " /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv UAE"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/ptt/sporttv3hd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBZ-5mxaLobuf_dPr_mw3vhqrMQIE-jGXtbQ&usqp=CAU
+ "alt"SPORT TV 3 HD " /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv UAE"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/ptt/sporttv4hd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://www.thesportsdb.com/images/media/tvlogo/vuytwx1470409983.png
+ "alt"SPORT TV 4 HD " /></a></button>  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="float: left;" class="filterDiv USA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/usa/tennischannel/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-xdUw61B3RPCWOJ_rphk58RewmRg7vOQquA&usqp=CAU
+ "alt"tenis channel" /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv ARAB"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/arb/tivibusport1/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://logowik.com/content/uploads/images/687_ttnettivibu.jpg
+ "alt"TIVBU SPORTS 1" /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv ARAB"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/arb/tivibusport2/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdAqPAABxYq3lij6yIw5m8uOAabbuJdfh3FA&usqp=CAU
+ "alt"TIVBU SPORTS 2" /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv ARAB"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/arb/tivibusport3/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtjETGlpt7eehfjWzbrxKuSRhkIdIkpXVlKg&usqp=CAU
+ "alt"TIVBU SPORTS 3" /></a></button>  </div>
+
+
+
+
+
+
+
+
+
+
+<div style="float: left;" class="filterDiv USA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/usa/tsn1hd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_kFPjb6RNpGYct7qXFaJ6aChmOgXSoWWqlA&usqp=CAU
+ "alt"TSN 1" /></a></button>  </div>
+
+
+
+
+<div style="float: left;" class="filterDiv USA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/usa/tsn2hd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSAIN7qeeG_5Hur_tbmiOLCjIPl6t6zG6TKA&usqp=CAU
+ "alt"TSN 2" /></a></button>  </div>
+
+<div style="float: left;" class="filterDiv USA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/usa/tsn3hd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOSx2tqtblnB4hUX84FDA2-DoqUa8vR9lKQQ&usqp=CAU
+ "alt"TSN 3" /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv USA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/usa/tsn4hd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRQ6_lkR_OKYlxqZme5iKXRferl7SnYnaXXg&usqp=CAU
+ "alt"TSN 4" /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv USA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/usa/tsn5hd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZc8qfQ6O1_MaYPMq1ogYMCQoGDKZy_n4RLw&usqp=CAU
+ "alt"TSN 5" /></a></button>  </div>
+
+
+
+<div style="float: left;" class="filterDiv USA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/uk2/ufcfightpass/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWoRLs7QYwffcGvF9Ej3rgbH1aGG1HInZAVw&usqp=CAU
+ "alt"UFC FIGHT PASS" /></a></button>  </div>
+
+
+<div style="float: left;" class="filterDiv USA"> 
+<button id="1" name="1" value="http://n1.mtfxg.xyz:8081/usa/wwehd/playlist.m3u8">
+<img id="imageField" class="Button border" name="imageField"
+src="
+ https://upload.wikimedia.org/wikipedia/en/8/8c/WWE_Network_logo.jpeg
+ "alt"WWE" /></a></button>  </div></div>
+
+
+
+
+
+<hr>
+
+<font size="3">
+<span style="color:#ffffff;">
+C</span><span style="color:#ffffff;">o</span><span style="color:#ffffff;">p</span><span style="color:#ffffff;">y</span><span style="color:#ffffff;">r</span><span style="color:#ffffff;">i</span><span style="color:#ffffff;">g</span><span style="color:#ffffff;">h</span><span style="color:#ffffff;">t</span><span style="color:#ffffff;"> </span><span style="color:#ffffff;">©</span><span style="color:#ff5d00;"> </span><span style="color:#ff6600;">2</span><span style="color:#ff6e00;">0</span><span style="color:#ff7700;">2</span><span style="color:#ff7f00;">2</span><span style="color:#ff8800;">,</span><span style="color:#ff9000;"> </span><span style="color:#ff9900;">L</span><span style="color:#ffa100;">i</span><span style="color:#ffaa00;">v</span><span style="color:#ffb200;">e</span><span style="color:#ffbb00;"> </span><span style="color:#ffc300;">T</span><span style="color:#ffcc00;">V</span><span style="color:#ffd400;"> </span><span style="color:#ffdd00;">-</span><span style="color:#ffe500;"> </span><span style="color:#ffee00;">A</span><span style="color:#fff600;">l</span><span style="color:#ffff00;">l</span><span style="color:#efff00;"> </span><span style="color:#dfff00;">R</span><span style="color:#cfff00;">i</span><span style="color:#bfff00;">g</span><span style="color:#afff00;">h</span><span style="color:#9fff00;">t</span><span style="color:#8fff00;">s</span><span style="color:#80ff00;"> </span><span style="color:#70ff00;">R</span><span style="color:#60ff00;">e</span><span style="color:#50ff00;">s</span><span style="color:#40ff00;">e</span><span style="color:#30ff00;">r</span><span style="color:#20ff00;">v</span><span style="color:#10ff00;">e</span><span style="color:#00ff00;">d</span><span style="color:#00ff11;"> </span><span style="color:#00ff22;">B</span><span style="color:#00ff33;">y</span><span style="color:#00ff44;"> </span>
+
+<span style="color:#00ff55;">❤️
+</span>
+<span style="color:#00ff55;">S</span><span style="color:#00ff66;">y</span><span style="color:#00ff77;">e</span><span style="color:#00ff88;">d</span><span style="color:#00ff99;"> </span><span style="color:#00ffaa;">M</span><span style="color:#00ffbb;">u</span><span style="color:#00ffcc;">z</span><span style="color:#00ffdd;">a</span><span style="color:#00ffee;">m</span><span style="color:#00ffff;">m</span><span style="color:#00eeff;">i</span><span style="color:#00ddff;">l</span><span style="color:#00ccff;"> </span><span style="color:#00bbff;">S</span><span style="color:#00aaff;">h</span><span style="color:#0099ff;">a</span><span style="color:#0088ff;">h</span><span style="color:#0077ff;"> </span><span style="color:#0066ff;">B</span><span style="color:#0055ff;">u</span><span style="color:#0044ff;">k</span><span style="color:#0033ff;">h</span><span style="color:#0022ff;">a</span><span style="color:#0011ff;">r</span><span style="color:#0000ff;">i
+<span style="color:#00ff55;">❤️
+</h1></div><hr>
+
+
+<body style ="background:#E4007C;">
+
+
+
+
+
+             
+
+
+
+
+   
+
+<p style="display: none" id="adjust">0</p>
+<div style="font-weight: bold; border:border-radius: 100%; color: gold; font-size: 25px; position: fixed; top: 238px;margin-left: -8px;margin-right: 0px;">
+
+
+
+
+
+ 
+  
+      <div style="position: fixed; top: 0px; width: 100%">
+        <center>
+          <video class="afterglow" poster="https://i.pinimg.com/736x/f1/3a/82/f13a827c9c9677f9cc5e37fe1108d294.jpg" id='videoplayer' preload="none" title='MUZAMIL TV' data-skin="light" width='16' height='9' data-autoresize="fit" src="">
+<source src="#" type="video/mp4">
+</video>
+        
+
+
+  <a style="background-color:url="https://i.pinimg.com/736x/9c/88/68/9c8868ebc8edafcde51e1989e65e1046.jpg">
+          
+
+
+  <center> <p style="display: none" id="adjust">0</p>
+
+
+<div style="font-weight: bold; border:border-radius: 100%; color: gold; font-size: 25px; position: fixed; top: 202px;margin-left: -6px;margin-right: 0px;">
+
+<img src="https://i.ibb.co/y4WQ1Zw/Sports-tv-logo.png"height="60"width="375">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script type="text/javascript">
+      document.oncontextmenu = function(e) {
+        var t = e || window.event;
+        var n = t.target || t.srcElement;
+        if (n.nodeName != "A") return false
+      };
+      document.ondragstart = function() {
+        return false
+      };
+    </script>
+    
+<script>
+var vid = afterglow.getPlayer('videoplayer');
+	     $("button").click(function() {
+    var slug = $(this).val();
+
+                $.ajax({
+
+                type: "POST",
+
+                url: "https://corsany-where.herokuapp.com/http://delta.rapidstreams.io/gt.rstrm/" ,
+
+                data:"",
+
+                success: function(result){
+                
+
+afterglow.getPlayer('videoplayer').pause().currentTime(0).src(slug+result).play();
+
+}
+});
+ });
+ </script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p style="display: none" id="adjust">0</p>
+
+
+<div style="font-weight: bold; border:border-radius: 100%; color: gold; font-size: 25px; position: fixed; top: 210px;margin-left: 30px;margin-right: 0px;">
+
+
+
+
+
+
+
+
+
+  
+
+
+ <button Class="myButton" onclick="filterSelection('all')"> All</button>
+  <button 
+Class="myButton"
+  onclick="filterSelection('PAKISTAN')"> PAKISTAN</button>
+  <button 
+Class="myButton"
+  onclick="filterSelection('INDIA')">INDIA</button>
+  <button 
+Class="myButton"
+  onclick="filterSelection('UAE')">UAE</button>
+  
+  <button 
+Class="myButton"
+  onclick="filterSelection('ARAB')">ARAB</button>
+  
+  
+<button 
+Class="myButton"
+  onclick="filterSelection('US')">USA</button>
+
+<button 
+Class="myButton"
+  onclick="filterSelection('UK')">UK</button>
+
+
+
+
+
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+filterSelection("all")
+function filterSelection(c) {
+  var x, i;
+  x = document.getElementsByClassName("filterDiv");
+  if (c == "all") c = "";
+  for (i = 0; i < x.length; i++) {
+    w3RemoveClass(x[i], "show");
+    if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+  }
+}
+
+function w3AddClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    if (arr1.indexOf(arr2[i]) == -1) {element.className += " " + arr2[i];}
+  }
+}
+
+function w3RemoveClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    while (arr1.indexOf(arr2[i]) > -1) {
+      arr1.splice(arr1.indexOf(arr2[i]), 1);     
+    }
+  }
+  element.className = arr1.join(" ");
+}
+
+// Add active class to the current button (highlight it)
+var btnContainer = document.getElementById("myBtnContainer");
+var btns = btnContainer.getElementsByClassName("btn");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function(){
+    var current = document.getElementsByClassName("active");
+    current[0].className = current[0].className.replace(" active", "");
+    this.className += " active";
+  });
+}
+</script>  
