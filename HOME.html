@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LIVE-TV</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<style>
+        body {
+            background-color:;
+        }
+        .alignleft {
+            float:left;
+            margin-left:5px;
+            color:silver;
+            font-weight:bold;
+            font-size:15px;
+        }
+        .alignright {
+            float:right;
+            margin-right:10px;
+            color:skyblue;
+            font-size:15px;
+            font-weight:normal;
+        }
+        h4 {
+            margin-left:5px;
+            color:silver;
+            font-weight:bold;
+            font-size:15px;
+        }
+        .nta {
+            position:relative;
+            overflow:hidden;
+        }
+        div.scrollmenu {
+            background-color:;
+            overflow: auto;
+            white-space: nowrap;
+            position:relative;
+            overflow-y:hidden;
+        }
+        div.scrollmenu a {
+            display: inline-block;
+            color: green;
+            text-align:center;
+            padding: 5px;
+            text-decoration: none;
+        }
+        
+        .cen {
+            position:relative;
+            text-align:center;
+            color:red;
+        }
+        .centered {
+            font-size:14px;
+            font-weight:bold;
+            position:absolute;
+            top:80%;
+            left: 50%;
+            transform:translate(-50%, -50%);
+        }
+        .cent {
+            font-size:auto;
+            position:absolute;
+            top:100%;
+            left: 50%;
+            transform:translate(-50%, -50%);
+        }
+        .nt {
+            width: 120px;
+            border-radius: 15px;
+            height: 155px;
+            z-index:1;
+            border: 2px solid #f2f2f2;
+            transition: all 0.3s ease;
+        }
+        .nt:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+        }
+        .mnt {
+            width: 150px;
+            border-radius: 5px;
+            height: 80px;
+            border: 2px solid #f2f2f2;
+            transition: all 0.3s ease;
+        }
+        .mnt:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+        }
+        .mnd {
+            width: 110px;
+            border-radius: 18px;
+            height: 110px;
+            border: 2px solid #f2f2f2;
+            transition: all 0.3s ease;
+        }
+        .mnd:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+        }
+        .trt {
+            width: 250px;
+            border-radius: 5px;
+            height: 130px;
+            border: 2px solid #f2f2f2;
+            transition: all 0.3s ease;
+        }
+        .trt:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+        }
+        .carousel-inner img {
+            width: 100%;
+            height: auto;
+            border: 3px solid gold;
+            border-radius: 5px;
+        }
+        .carousel-caption {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+        }
+        .live-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: red;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 13px;
+            font-weight: bold;
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body style="background: url('https://i.pinimg.com/originals/aa/0d/f5/aa0df50615618a50a6f0fbb0108a08dc.jpg'); background-size: 100% 100%">
+
+<h1 style="text-align: center; padding-top: 50%;"><span style="color: #ff0000;"><span style="color:#FFFFFF;"></span></div>
+
+<div class="nta">
+    <a href="go:cs"><h4 class="alignleft">TRENDING NOW</h4><h4 class="alignright"></h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="https://rawcdn.githack.com/MuzammilShah51214/LIVE-TV-/2d6ccf75c18ebb58ecb44e77915d99e2ee6a03b2/Man%20mast%20malang.html"man mast malang">
+        <img class="mnt" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5ZJuW_mbabywVYpYmNWpzfj12hSGChg7rTFq1FyfXacGek_TjTd_8-WE&s=10">
+    </a>
+    <a href="go:24hr">
+        <img class="mnt" src="https://i.pinimg.com/736x/b2/9b/49/b29b498502e80eca6fd5c66f064caf87.jpg">
+    </a>
+    <a href="go:bigboss1">
+        <img class="mnt" src="https://i.pinimg.com/736x/6b/f4/3a/6bf43ad90ddd656fa3239fa7c2ba746e.jpg">
+    </a>
+    <a href="go:KPL">
+        <img class="mnt" src="https://bollyfuntv.net/wp-content/uploads/2021/09/The-Kapil-Sharma-Show-310x165.jpg">
+    </a>
+    <a href="go:bigbos">
+        <img class="mnt" src="https://i.pinimg.com/236x/ad/a2/1e/ada21e5ab68eb526140dc7e20acfc9fc.jpg">
+    </a>
+    <a href="go:dancep">
+        <img class="mnt" src="https://i.pinimg.com/236x/77/9e/e3/779ee341e076421bdc50d85af84b0893.jpg">
+    </a>
+    <a href="go:crpati">
+        <img class="mnt" src="https://i.pinimg.com/236x/cb/7e/57/cb7e57c391be6a8af567b07fea3f4e57.jpg">
+    </a>
+</div>
+
+<div class="nta">
+    <a href="https://rawcdn.githack.com/MuzammilShah51214/Live-Tv-786/46f735b6ec79d9078b4ce51b946ad8a84f472507/PAKISTAN_LIVE-TV.html"><h4 class="alignleft">PAKISTANI CHANNELS</h4><h4 class="alignright">See All</h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="https://rawcdn.githack.com/MuzammilShah51214/LIVE-TV-/ca131080dc3a3efcb7f352de28d8d9feaf886556/Live-channels">
+        <div class="cen ag">
+            <img class="nt" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZr-x4pdTOQq9kirdbbhxxAP0jnOAJZpVDW2flQO4uoTD1e4liENGGd2A&s=10">
+            <span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="https://rawcdn.githack.com/MuzammilShah51214/LIVE-TV-/fc1fcfb412e257bb1b6535f86ae88bde7e808a88/Suchtv.html">
+        <div class="cen">
+            <img class="nt" src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/poster/such-tv-live.webp?id=83">
+            <span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="https://rawcdn.githack.com/MuzammilShah51214/LIVE-TV-/4f5f8be4a5964c4202599ed43acaed3c5dea35b8/GeoEnt.html">
+        <div class="cen">
+            <img class="nt" src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/geo-entertainment-live.webp?id=75">
+            <span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="https://rawcdn.githack.com/MuzammilShah51214/LIVE-TV-/90ce5a6748d708ac5b946efc99dd8b5745f0ba30/Samaa.html">
+        <div class="cen ag">
+            <img class="nt" src="https://d34080pnh6e62j.cloudfront.net/images/channels/new_thumbs/1633512222056d2-65d9a-saama-tv-low.jpg">
+            <span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="https://rawcdn.githack.com/MuzammilShah51214/LIVE-TV-/2ab8a57681773fdc279e867a24c6dd887872a0c5/Dunyanews.html">
+        <div class="cen ag">
+            <img class="nt" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZXfD8mXuhzYNORwhKe9bZ8Yr-Vi5mbSnTsqc9PAMr3gNZIrM58bbyTFxM&s=10">
+            <span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="https://rawcdn.githack.com/MuzammilShah51214/LIVE-TV-/d1afbbeacb7b519285a260b952b681a534d56c34/AryNews.html">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/originals/ff/bf/97/ffbf972e33e78d97e4fcd23be2c4a50d.jpg" alt="arynews">
+            <span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="https://rawcdn.githack.com/MuzammilShah51214/LIVE-TV-/af57ba724c24d17dece4e20a65b39c67f70e0291/AurLife.html">
+        <div class="cen ag">
+            <img class="nt" src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/1745518766547.webp?id=28" alt="aurLife">
+            <span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="https://rawcdn.githack.com/MuzammilShah51214/LIVE-TV-/fd3e0c62f313022d31f4480eff06afbcbca39c52/APlus.html">
+        <div class="cen ag">
+            <img class="nt" src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/a-plus-live.webp?id=54">
+            <span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="https://rawcdn.githack.com/MuzammilShah51214/LIVE-TV-/9312b4096a452c751001310652c0cc46ab9b8c74/ExpressEnt.html">
+        <div class="cen ag">
+            <img class="nt" src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/poster/express-entertainment-live.webp?id=73">
+            <span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="https://rawcdn.githack.com/MuzammilShah51214/LIVE-TV-/4aa625764e02de66db90f5b9c62537399f029e0b/Ary%20Digital.html">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/originals/9b/01/7d/9b017d69d2fed544afc1df0b89747e8f.jpg">
+            <span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="https://rawcdn.githack.com/MuzammilShah51214/LIVE-TV-/37629d6225123bb17771ca01a3a334818ad071be/Humhd.html">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/originals/80/a1/f8/80a1f8c40d191e0718a883797e69f4f9.jpg" alt="HumTvHD">
+            <span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="https://rawcdn.githack.com/MuzammilShah51214/LIVE-TV-/421e6c703c3744e0b41d969708454fff438fa70c/Bolent.html">
+        <div class="cen">
+            <img class="nt" src="https://d34080pnh6e62j.cloudfront.net/images/channels/new_thumbs/16419858521.jpg" alt="bolent">
+            <span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="https://rawcdn.githack.com/MuzammilShah51214/LIVE-TV-/af11352c79da09dc99616a855b33b5e6673af5bc/PtvHome.html">
+        <div class="cen">
+            <img class="nt" src="https://ptv.com.pk/frontend/media/gallery/ptvlivehome.jpg">
+            <span class="live-badge">LIVE</span>
+        </div>
+    </a>
+</div>
+
+<div class="nta">
+    <a class="channel_box" href="go:pkhit"><h4 class="alignleft"></h4><h4 class="alignright"></h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:qr">
+        <div class="mnd">
+            <img class="mnd" src="https://i.postimg.cc/63P4hq5Y/Pics-Art-10-17-04-46-52.png">
+        </div>
+    </a>
+    <a href="go:radio">
+        <div class="mnd">
+            <img class="mnd" src="https://i.postimg.cc/mDLKSZ6z/Pics-Art-10-17-04-48-21.png">
+        </div>
+    </a>
+</div>
+
+<div class="nta">
+    <a href="go:cs"><h4 class="alignleft"> MOST PUPOLAR</h4><h4 class="alignright"></h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:2dil">
+        <img class="trt" src="https://i.pinimg.com/236x/f1/3e/86/f13e8693af81b1b1833afc2a38816748.jpg">
+    </a>
+    <a href="go:1bar">
+        <img class="trt" src="https://i.pinimg.com/236x/95/ea/1b/95ea1b2baeefbd8af059edc8654acdc4.jpg">
+    </a>
+    <a href="go:pyark">
+        <img class="trt" src="https://i.pinimg.com/236x/d1/b9/50/d1b95049da502e102a647ff48efb030b.jpg">
+    </a>
+    <a href="go:filhal">
+        <img class="trt" src="https://i.pinimg.com/236x/01/6b/61/016b61c9e354c1a750240f7b2ce49510.jpg">
+    </a>
+    <a href="go:adiala">
+        <img class="trt" src="https://i.pinimg.com/236x/09/98/4a/09984af27d2071d40ef508d440ffbe43.jpg">
+    </a>
+    <a href="go:love-t">
+        <img class="trt" src="https://i.pinimg.com/236x/e1/ef/6d/e1ef6d7d260e543beb4a8857591d44de.jpg">
+    </a>
+    <a href="go:sitam2">
+        <img class="trt" src="https://i.pinimg.com/236x/16/64/f4/1664f4eaeb205405a53e1c2e5a76230c.jpg">
+    </a>
+    <a href="go:dilkarisht">
+        <img class="trt" src="https://i.pinimg.com/736x/d0/7b/0f/d07b0fc1e0882bbf7498b2301bd3a6aa.jpg">
+    </a>
+    <a href="go:nigar">
+        <img class="trt" src="https://i.pinimg.com/736x/67/6b/2c/676b2c7d3223e38a1c79b64defd4c8d7.jpg">
+    </a>
+    <a href="go:pyark">
+        <img class="trt" src="https://i.pinimg.com/736x/25/97/3a/25973a9b4f82265684ee171afa191d60.jpg">
+    </a>
+</div>
+
+<div class="nta">
+    <a class="channel_box" href="go:pkhit"><h4 class="alignleft">PAKISTAN SUPPER HIT MOVIES</h4><h4 class="alignright">See All</h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:pkhit">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/d7/f9/3f/d7f93f9c54dd020e7728686cd14c73c1.jpg">
+        </div>
+    </a>
+    <a href="go:pkhit">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/43/40/b5/4340b5a3fc898579f80807168c75c3b8.jpg">
+        </div>
+    </a>
+    <a href="go:pkhit">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/43/8b/f4/438bf40e86e2a56ce9ec2deb73618c81.jpg">
+        </div>
+    </a>
+    <a href="go:pkhit">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/c1/11/ea/c111ead6645cc38ec7f5aa6f0a0f0a12.jpg">
+        </div>
+    </a>
+    <a href="go:pkhit">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/fd/9f/73/fd9f737e05850ae305444189e2166099.jpg">
+        </div>
+    </a>
+    <a href="go:pkhit">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/11/ce/20/11ce20c8d389c8a8a51c51c51ea3d6a0.jpg">
+        </div>
+    </a>
+    <a href="go:pkhit">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/70/d7/93/70d79393187553baacad1df14e8300d9.jpg">
+        </div>
+    </a>
+    <a href="go:pkhit">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/db/d5/a6/dbd5a6823c654c4dff537d9486e1ffcf.jpg">
+        </div>
+    </a>
+    <a href="go:pkhit">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/02/32/05/0232055cc240887cbbedae71514de7d2.jpg">
+        </div>
+    </a>
+    <a href="go:pkhit">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/60/ef/dd/60efdd3ae717bdae0bf54b8524a5aebd.jpg">
+        </div>
+    </a>
+</div>
+
+<div class="nta">
+    <a href="go:sportsch"><h4 class="alignleft">SPORTS CHANNELS</h4><h4 class="alignright">See All</h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:ptvsp">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/ff/0c/a0/ff0ca0ac3fa4fb1f6c960f05800a588f.jpg">
+   <span class="live-badge">LIVE</span>     </div>
+    </a>
+    <a href="go:tensp">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/97/36/0d/97360d966cb407835a335757a42c6275.jpg"><span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="go:geos">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/f3/0f/57/f30f57f7816017497dc09cc5eb0d28ef.jpg"><span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="go:w">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/b0/b7/12/b0b712cde799a36a9f40bea73127028c.jpg"><span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="go:sonysix">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/b9/28/a5/b928a5005fea22e188fabed903d2378c.jpg"><span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="go:starspo">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/51/f5/e8/51f5e8b7cded26642e706b8968a187c9.jpg"><span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="go:Eurosports">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/28/d9/bc/28d9bc71b567abf929c63abd55f5acf1.jpg"><span class="live-badge">LIVE</span>
+        </div>
+    </a>
+</div>
+
+<div class="nta">
+    <a href="go:indianc"><h4 class="alignleft">INDIAN CHANNELS</h4><h4 class="alignright">See All</h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:sonytv">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/04/79/59/047959c2bcfb461203175f4fa2c00d1a.jpg"><span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="go:zeetv">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/c3/5f/32/c35f32c3e009855c8d21d1c82307f62e.jpg"><span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="go:tv">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/ea/1e/b7/ea1eb7074749ab1e99790de26c691f52.jpg"><span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="go:star">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/29/6d/44/296d440fc4defcf0dbeee641315a7a71.jpg"><span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="go:zechd">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/8f/4a/f3/8f4af368c5448742b86a4e6565061e94.jpg"><span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="go:ndtvin">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/2f/d3/05/2fd305b41b05efa19528b04857545d25.jpg"><span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="go:maxhd">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/d2/c9/d5/d2c9d57aeaf49090d376570998ac4608.jpg"><span class="live-badge">LIVE</span>
+        </div>
+    </a>
+    <a href="go:&tv">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/06/aa/5b/06aa5b70ffe1ba4769a6b5a0136c41ca.jpg"><span class="live-badge">LIVE</span>
+        </div>
+    </a>
+</div>
+
+<div class="nta">
+    <a href="go:fuduco"><h4 class="alignleft">fuduco</h4><h4 class="alignright">See All</h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:fuduco">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/41/95/2e/41952ef9246963cfc36afdb9c0b76dfb.jpg">
+        </div>
+    </a>
+    <a href="go:fuduco">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/a0/d0/23/a0d023c1396a082a5e9f0a88871fbbbb.jpg">
+        </div>
+    </a>
+    <a href="go:fuduco">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/48/b0/eb/48b0ebcc503e118fe69764c1b5b572a7.jpg">
+        </div>
+    </a>
+    <a href="go:fuduco">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/04/66/a6/0466a67adbf110e7668327ef3d9955c6.jpg">
+        </div>
+    </a>
+    <a href="go:fuduco">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/df/b4/93/dfb493883017ebeab0166cd0dcc08ec5.jpg">
+        </div>
+    </a>
+    <a href="go:fuduco">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/a0/d0/23/a0d023c1396a082a5e9f0a88871fbbbb.jpg">
+        </div>
+    </a>
+    <a href="go:fuduco">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/a3/9b/c1/a39bc12bc136370526c300e7b7080f8d.jpg">
+        </div>
+    </a>
+    <a href="go:fuduco">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/de/40/46/de4046e83c05e5987b232597480e92a7.jpg">
+        </div>
+    </a>
+</div>
+
+<div class="nta">
+    <a href="go:kashmiri"><h4 class="alignleft">KASHMIRI BEATES SEASON 1 SONGS</h4><h4 class="alignright">See All</h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:kashmiri">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/45/8c/a9/458ca9b051fd594e89c792ee2c003566.jpg">
+        </div>
+    </a>
+    <a href="go:kashmiri">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/59/fb/db/59fbdbb6a52b71aec1e531442a7908ae.jpg">
+        </div>
+    </a>
+    <a href="go:kashmiri">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/e2/b4/3e/e2b43e1edf2abc55730cc70b02448497.jpg">
+        </div>
+    </a>
+</div>
+
+<div class="nta">
+    <a href="go:"><h4 class="alignleft">Awards Shows</h4><h4 class="alignright"></h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:2019">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/90/e8/e5/90e8e587918f3d40c4a8c6116b2017dd.jpg">
+        </div>
+    </a>
+    <a href="go:kapil2">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/55/76/c1/5576c13aab77b7dfb71a741d43771e98.jpg">
+        </div>
+    </a>
+    <a href="go:award">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/d3/ba/4a/d3ba4aa5a55aa1b243d32d031eff25f5.jpg">
+        </div>
+    </a>
+    <a href="go:2020">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/b0/7f/8a/b07f8aad98dc7c9ffb1c175a58eaa2ca.jpg">
+        </div>
+    </a>
+    <a href="go:gold">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/12/ca/e0/12cae0b32964853885db5e5ec9c76e12.jpg">
+        </div>
+    </a>
+    <a href="go:mirchim">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/d1/b0/7a/d1b07a83384162f4454f2f2865d82068.jpg">
+        </div>
+    </a>
+    <a href="go:cine">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/f2/a9/5e/f2a95e234f9295c1d5394601acce0697.jpg">
+        </div>
+    </a>
+    <a href="go:lux">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/39/03/b4/3903b449359fe00264e269cb958eaa05.jpg">
+        </div>
+    </a>
+    <a href="go:idol">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/c2/b5/4b/c2b54beaecda32419d0c5c8c9eb54d70.jpg">
+        </div>
+    </a>
+    <a href="go:ff">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/2f/92/ec/2f92ec1f42c586be208cc8022b400745.jpg">
+        </div>
+    </a>
+    <a href="go:sc">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/7c/04/9b/7c049b156f016b60471365bbec6a64a0.jpg">
+        </div>
+    </a>
+    <a href="go:mirchii">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/1a/50/23/1a50237da0793429bd306495771e95b0.jpg">
+        </div>
+    </a>
+</div>
+
+<div class="nta">
+    <a href="go:dramas"><h4 class="alignleft">HUM TV Catch Up</h4><h4 class="alignright"></h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:laa">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/736x/b1/b1/22/b1b122e750a24eab6e39b0e32f249d63.jpg">
+        </div>
+    </a>
+    <a href="go:wafab">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/42/1d/6d/421d6d671483fef99a509a0cdfff7aeb.jpg">
+        </div>
+    </a>
+    <a href="go:lp">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/74/c4/c8/74c4c86d578d0927f57799448ff5a036.jpg">
+        </div>
+    </a>
+    <a href="go:hmk">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/01/be/98/01be987ea823849dcd51d42e023d6939.jpg">
+        </div>
+    </a>
+    <a href="go:qisa">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/6e/a8/01/6ea8017fe0566fd282e5801b731d83f5.jpg">
+        </div>
+    </a>
+    <a href="go:pr">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/43/39/53/4339537ebdbac814d6ec91feeb37b731.jpg">
+        </div>
+    </a>
+    <a href="go:tanabana">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/7b/5b/e6/7b5be616f5760b800baf7de973b2581c.jpg">
+        </div>
+    </a>
+    <a href="go:youp">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/4b/e2/b4/4be2b4200bda6c2edec7094c2c88ad06.jpg">
+        </div>
+    </a>
+    <a href="go:chanda1">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/68/20/14/682014c4f4522223226646dc4fc10248.jpg">
+        </div>
+    </a>
+    <a href="go:chanda2">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/24/c6/53/24c65370a218dc7d8c53452fd12b5cbd.jpg">
+        </div>
+    </a>
+    <a href="go:phaans">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/89/e6/5a/89e65a50c8c58649f2258f8daf0d5aa6.jpg">
+        </div>
+    </a>
+    <a href="go:kabtak">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/f1/b2/9a/f1b29a0196444529363dc04db41087bb.jpg">
+        </div>
+    </a>
+    <a href="go:yaar">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/originals/f5/f2/f5/f5f2f5095188549a9ab10c7962fe5bf0.jpg">
+        </div>
+    </a>
+    <a href="go:sitam">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/c5/9b/2d/c59b2da0e1dd279cb7e2bc6215b25ccb.jpg">
+        </div>
+    </a>
+    <a href="go:ehdw">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/81/72/7f/81727f2c44c735a4598e935895dfee9e.jpg">
+        </div>
+    </a>
+    <a href="go:safar">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/32/93/33/3293339f99302b6c5782a48054712179.jpg">
+        </div>
+    </a>
+    <a href="go:chamak">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/a4/bc/bd/a4bcbdb3c26715abacd62d65f596a992.jpg">
+        </div>
+    </a>
+    <a href="go:ch">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/27/60/6e/27606edb6319eacb15edd8a600ed63a7.jpg">
+        </div>
+    </a>
+    <a href="go:jaa">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/f2/f1/da/f2f1dab5fc1fa2d90aef609d4854e170.jpg">
+        </div>
+    </a>
+    <a href="go:raqeeb">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/53/bf/9a/53bf9a09d5c8f5fa37c9e672ac25c390.jpg">
+        </div>
+    </a>
+    <a href="go:dil">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/5d/54/13/5d541357f0bda639ce2344131ff42422.jpg">
+        </div>
+    </a>
+</div>
+
+<div class="nta">
+    <a href="go:dramas"><h4 class="alignleft">PAKISTANI OLD DRAMAS</h4><h4 class="alignright"></h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:jin">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/b6/13/4d/b6134d7dab4027e34f892f000f5e9415.jpg">
+        </div>
+    </a>
+    <a href="go:tasveer">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/9d/97/9c/9d979c208fa1b9791bc6dda61869a92f.jpg">
+        </div>
+    </a>
+    <a href="go:Tanhaiyan">
+        <div class="cen ag">
+            <img class="nt" src="https://jazzstream.pk/image/pakistani/tanhaiyan-1990/album_thumbs/Tanhaiyan_480x270.webp">
+        </div>
+    </a>
+    <a href="go:AGHOSH">
+        <div class="cen ag">
+            <img class="nt" src="https://jazzstream.pk/image/pakistani/aaghosh-1990/album_thumbs/Aaghosh_480x270.webp">
+        </div>
+    </a>
+    <a href="go:ANGAN">
+        <div class="cen ag">
+            <img class="nt" src="https://jazzstream.pk/image/drama/aangan_tehra-1987/album_thumbs/Aangan_Tehra_480x270.webp">
+        </div>
+    </a>
+    <a href="go:alf">
+        <div class="cen ag">
+            <img class="nt" src="https://jazzstream.pk/image/drama/alif_noon-1982/album_thumbs/Alif_Noon_1280x720.webp">
+        </div>
+    </a>
+    <a href="go:BUT">
+        <div class="cen ag">
+            <img class="nt" src="https://jazzstream.pk/image/pakistani/butt_palace-2018/album_thumbs/Butt_Palace_1280x720.webp">
+        </div>
+    </a>
+    <a href="go:ilteja">
+        <div class="cen ag">
+            <img class="nt" src="https://jazzstream.pk/image/pakistani/iltija_hai_meri-2017/album_thumbs/Iltija_Hai_Meri_1280x720.webp">
+        </div>
+    </a>
+    <a href="go:do">
+        <div class="cen ag">
+            <img class="nt" src="https://jazzstream.pk/image/pakistani/dastak_na_do-2018/album_thumbs/Dastak_Na_Do_480x270.webp">
+        </div>
+    </a>
+    <a href="go:dilch">
+        <div class="cen ag">
+            <img class="nt" src="https://jazzstream.pk/image/pakistani/agar_aur_jee_latay-2017/album_thumbs/Agar_Aur_Jee_Latay_1280x720.webp">
+        </div>
+    </a>
+</div>
+
+<div class="nta">
+    <a href="go:turkishd"><h4 class="alignleft">TURKISH DRAMAS</h4><h4 class="alignright">See All</h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:mukhtar">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/originals/5d/13/f1/5d13f164b0794a2e6122256cb1f18d2a.jpg">
+        </div>
+    </a>
+    <a href="go:s1">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/originals/16/ad/fa/16adfa08398264bcee1a341913a143d3.jpg">
+        </div>
+    </a>
+    <a href="go:s2">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/originals/7e/a6/1b/7ea61bd307319a26ce1ff8d37647efad.jpg">
+        </div>
+    </a>
+    <a href="go:s3">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/9a/ac/8e/9aac8ea1d7e5432762dd4e544dc87795.jpg">
+        </div>
+    </a>
+    <a href="go:emiri">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/69/15/32/691532754f1af96914a87dcfeb883db0.jpg">
+        </div>
+    </a>
+    <a href="go:thep">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/6f/e3/48/6fe348d291490343a36ddc516a614b76.jpg">
+        </div>
+    </a>
+    <a href="go:meh">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/07/4d/88/074d8865b54fb849ed190c05d05b808f.jpg">
+        </div>
+    </a>
+    <a href="go:kosum">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/9a/6a/1e/9a6a1e0ca1ea222767d8a48995b18d05.jpg">
+        </div>
+    </a>
+</div>
+
+<div class="nta">
+    <a href="go:dramas"><h4 class="alignleft">LATEST Dramas</h4><h4 class="alignright"></h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:hms">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/8d/09/0f/8d090ff62ecb066a69d7fce4f9b15062.jpg">
+        </div>
+    </a>
+    <a href="go:rangde">
+        <div class="cen ag">
+            <img class="nt" src="https://content-dmd.s3.eu-central-1.amazonaws.com/TP-Content/static-content/dramas/Mujhe%20Rang%20De.jpg">
+        </div>
+    </a>
+    <a href="go:zaat">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/b7/c9/2b/b7c92b0b995124b7b90ffdfba986342a.jpg">
+        </div>
+    </a>
+    <a href="go:tishnagi">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/21/6f/43/216f430cf75d31585e8bc5f6c393959f.jpg">
+        </div>
+    </a>
+    <a href="go:na">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/8f/bd/b0/8fbdb0f2c60ecc76ec77e8ada44ca4f4.jpg">
+        </div>
+    </a>
+    <a href="go:mein">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/84/62/bd/8462bd7d6f495ffba0d791cd21671ea3.jpg">
+        </div>
+    </a>
+    <a href="go:ish">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/55/8f/24/558f24493a657cf56b5d344c10c27b58.jpg">
+        </div>
+    </a>
+    <a href="go:aurtum">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/30/22/33/30223329cea66f88b31a89852d55d70c.jpg">
+        </div>
+    </a>
+    <a href="go:harjaee">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/1b/ec/ab/1becabf7945bed46fdc3131c2e799b8a.jpg">
+        </div>
+    </a>
+    <a href="go:seerhi">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/2f/bb/57/2fbb572e6903fd31581fd1392abe4a40.jpg">
+        </div>
+    </a>
+    <a href="go:maya">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/a7/ef/b1/a7efb1a893c981cbd717ed5f1231b835.jpg">
+        </div>
+    </a>
+    <a href="go:raniya">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/cd/ff/a0/cdffa09305c1ef33faa80d1f93ff091e.jpg">
+        </div>
+    </a>
+    <a href="go:si">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/28/41/b8/2841b8cc9c279255f815efef00df1c81.jpg">
+        </div>
+    </a>
+    <a href="go:ir">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/f8/1f/3b/f81f3b1839cd1a5f16713f23f2c846f1.jpg">
+        </div>
+    </a>
+    <a href="go:alpha">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/f8/1f/3b/f81f3b1839cd1a5f16713f23f2c846f1.jpg">
+        </div>
+    </a>
+    <a href="go:nisa">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/89/d0/c7/89d0c7331656371187dd5395be3acd4b.jpg">
+        </div>
+    </a>
+    <a href="go:ilzam">
+        <div class="cen ag">
+            <img class="nt" src="https://i.pinimg.com/236x/7e/e7/c7/7ee7c7c7acd39bddc16b5232da3916b4.jpg">
+        </div>
+    </a>
+    <a href="go:su">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/b9/ff/c1/b9ffc14ebec9539818a9a543522943da.jpg">
+        </div>
+    </a>
+</div>
+
+<div class="nta">
+    <a href="go:ind"><h4 class="alignleft">INDIAN DRAMAS</h4><h4 class="alignright">See All</h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:behna">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/63/d1/ae/63d1ae46a0602939bdbf783a4045f43e.jpg">
+        </div>
+    </a>
+    <a href="go:jadu">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/0e/1a/b2/0e1ab293e27cd048f29f4658a10657e6.jpg">
+        </div>
+    </a>
+    <a href="go:rz">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/57/b1/1c/57b11c259f287d22c2d67ba7e2518390.jpg">
+        </div>
+    </a>
+    <a href="go:kalria">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/02/c8/7e/02c87e0d25d76390c109b47a6d9fa763.jpg">
+        </div>
+    </a>
+    <a href="go:ishqm">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/07/a5/0e/07a50e4e28e07b2383404b43af5601ac.jpg">
+        </div>
+    </a>
+    <a href="go:bepanah">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/72/7e/b0/727eb01601603f7ef7e3b5444685d91b.jpg">
+        </div>
+    </a>
+    <a href="go:yhm">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/63/87/9b/63879bc725ff616b94fff425f091bd7b.jpg">
+        </div>
+    </a>
+    <a href="go:kasamt">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/89/a7/7b/89a77b6f0d8dfbbf537fa5ad114ad768.jpg">
+        </div>
+    </a>
+    <a href="go:rr">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/d2/9f/9c/d29f9c019d7a3d7b1381c5d1c633c35d.jpg">
+        </div>
+    </a>
+    <a href="go:shakti">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/e3/9c/31/e39c31eb309f1261e880fb12fff715ec.jpg">
+        </div>
+    </a>
+    <a href="go:nagin4">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/71/af/17/71af17f72642fb0ba4c9395387d3d7d3.jpg">
+        </div>
+    </a>
+    <a href="go:balveer1">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/1c/dc/48/1cdc48bc28a66d57bb02e3dcd0f1d33b.jpg">
+        </div>
+    </a>
+    <a href="go:madamsir">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/c6/19/79/c61979a83e55ade4aaca18a4cede3d4e.jpg">
+        </div>
+    </a>
+    <a href="go:batiya">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/20/60/1a/20601a45aa1c0008b25ecca7be3ed77f.jpg">
+        </div>
+    </a>
+    <a href="go:tu">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/0b/15/f0/0b15f02f9bf70b225fa66bfb20c4c0b2.jpg">
+        </div>
+    </a>
+    <a href="go:s9">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/ef/f0/ff/eff0ff17329cb8fcc8d5ac03e0707b28.jpg">
+        </div>
+    </a>
+    <a href="go:s11">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/originals/0e/33/ee/0e33ee4413018fe6bff133db73438215.jpg">
+        </div>
+    </a>
+    <a href="go:heer">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/originals/47/2f/68/472f68954350fdb047b9c94978ed5da2.jpg">
+        </div>
+    </a>
+    <a href="go:manwan">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/39/8d/37/398d3799110036c639afe803f0e78059.jpg">
+        </div>
+    </a>
+    <a href="go:akhiya">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/92/3f/87/923f870401e4113c699380af29fc632e.jpg">
+        </div>
+    </a>
+    <a href="go:cid">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/originals/46/cd/24/46cd241ad7086fb3ed8900ec2f543e7e.jpg">
+        </div>
+    </a>
+    <a href="go:2.0">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/0f/64/81/0f648114c6f09b4e031b3c47e4b0f08b.jpg">
+        </div>
+    </a>
+    <a href="go:prom">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/18/78/d2/1878d2d496ee6954614c7afca044f701.jpg">
+        </div>
+    </a>
+    <a href="go:kundli">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/c6/70/0b/c6700b587e95698088bf3491379b3861.jpg">
+        </div>
+    </a>
+    <a href="go:mahik">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/c5/77/f2/c577f26ff21d6affb5605c78c09630f7.jpg">
+        </div>
+    </a>
+    <a href="go:jeet">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/5e/1e/7b/5e1e7bfdb8c0dd7bf5b61bb26c609f63.jpg">
+        </div>
+    </a>
+    <a href="go:seth">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/13/8c/25/138c253525f88b0a33af2d2ca786f67f.jpg">
+        </div>
+    </a>
+    <a href="go:dildosti">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/6d/db/e6/6ddbe69f26dc46920a1c1e54bfe613e7.jpg">
+        </div>
+    </a>
+    <a href="go:didi">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/ed/a9/64/eda96452457ded02a32a1a307cd4356d.jpg">
+        </div>
+    </a>
+    <a href="go:se2">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/3b/cd/8d/3bcd8d277513c39bfd1c5e30c5d0b6ea.jpg">
+        </div>
+    </a>
+    <a href="go:bahu">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/b8/f2/fc/b8f2fc71159b82a5bf577a4342574309.jpg">
+        </div>
+    </a>
+    <a href="go:tum">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/30/04/39/300439abb69897ac0aaae3fa64987bfa.jpg">
+        </div>
+    </a>
+</div>
+
+<div class="nta">
+    <a href="go:pkdramas"><h4 class="alignleft">PAKISTANI DRAMAS</h4><h4 class="alignright">See All</h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:vida">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/1f/e2/98/1fe2986bc3aa6be6da85a00f29a9c6d9.jpg">
+        </div>
+    </a>
+    <a href="go:ishqhai">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/56/96/27/569627e31a9c3c133d598b7b59c45df3.jpg">
+        </div>
+    </a>
+    <a href="go:ks1">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/30/fa/6d/30fa6d080fdc4f14eeb9f42fa87d5fe7.jpg">
+        </div>
+    </a>
+    <a href="go:shenai">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/ef/8a/c5/ef8ac5bb603eb94c3145602965e44b5c.jpg">
+        </div>
+    </a>
+    <a href="go:neli">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/ff/b6/eb/ffb6eb99e807c000e384c78c8e4304d2.jpg">
+        </div>
+    </a>
+    <a href="go:piyan">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/30/30/20/303020e240529f27389314338edfc549.jpg">
+        </div>
+    </a>
+    <a href="go:bismil">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/8e/e7/0b/8ee70b4571700cb972941e7c5b522109.jpg">
+        </div>
+    </a>
+    <a href="go:2bol">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/43/a0/5c/43a05ca06bad04c0552adf5049ccd8a7.jpg">
+        </div>
+    </a>
+    <a href="go:cheekh">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/0e/02/9b/0e029bf7d19b06051511fc93aa6ed156.jpg">
+        </div>
+    </a>
+    <a href="go:beti">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/c6/2c/e4/c62ce43884068ce476949ece8308aaa2.jpg">
+        </div>
+    </a>
+    <a href="go:kesa">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/98/f6/8c/98f68c93ec385560e39edb1605cc8656.jpg">
+        </div>
+    </a>
+    <a href="go:bandish">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/32/93/16/329316c2c0f59cc955c13a7a6f5a76fd.jpg">
+        </div>
+    </a>
+    <a href="go:ranjha">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/01/1d/db/011ddbe7d96acc89149ef04877c7bba1.jpg">
+        </div>
+    </a>
+    <a href="go:chupke">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/originals/63/7b/9a/637b9a39732c0b150e33b8ce2883b40d.jpg">
+        </div>
+    </a>
+    <a href="go:sadky">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/53/74/ab/5374ab893ae48d99c48ccb2eef1c6227.jpg">
+        </div>
+    </a>
+    <a href="go:gulzar">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/bb/d9/6f/bbd96f968e474a9c09342826593f0950.jpg">
+        </div>
+    </a>
+    <a href="go:deedan">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/63/05/6d/63056d449923a327d2329989402ae464.jpg">
+        </div>
+    </a>
+    <a href="go:kahani">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/19/b7/38/19b7383ee9cfb02d3ec104404c7a6366.jpg">
+        </div>
+    </a>
+    <a href="go:mdrd">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/f6/7f/d2/f67fd2948fbe95645abac239241a83fb.jpg">
+        </div>
+    </a>
+</div>
+
+<div class="nta">
+    <a href="go:indianm"><h4 class="alignleft">SUPER HIT INDIAN MOVIES</h4><h4 class="alignright">See All</h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:indianm">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/ce/14/dd/ce14dddf3b420bc56130aedd40e47d96.jpg">
+        </div>
+    </a>
+    <a href="go:indianm">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/31/5a/27/315a276e8f3b7b9573d4ebc6a7d77a48.jpg">
+        </div>
+    </a>
+    <a href="go:indianm">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/49/74/12/4974129dd9abcd36a3cdd7ca496470fe.jpg">
+        </div>
+    </a>
+    <a href="go:indianm">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/0f/68/de/0f68de71c24baed8b1951120a5619a49.jpg">
+        </div>
+    </a>
+    <a href="go:indianm">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/4c/44/08/4c44081c8c45f6c2aa3645dc05ac0a4c.jpg">
+        </div>
+    </a>
+    <a href="go:indianm">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/2c/08/03/2c080348c54c6098884baa99c2bc5a0d.jpg">
+        </div>
+    </a>
+    <a href="go:indianm">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/f9/59/e5/f959e518d63e886729d864acedc782cc.jpg">
+        </div>
+    </a>
+    <a href="go:indianm">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/1f/f0/1c/1ff01cf2c1e49836048049dc0cc4996c.jpg">
+        </div>
+    </a>
+</div>
+
+<div class="nta">
+    <a href="go:islamic"><h4 class="alignleft">ISLAMIC</h4><h4 class="alignright">See All</h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:99">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/a7/d3/4c/a7d34c4f96bf6dd350dc7973e39a72a3.jpg">
+        </div>
+    </a>
+    <a href="go:quran">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/c4/87/d0/c487d0a9e1e4f915655df30e62a1f63e.jpg">
+        </div>
+    </a>
+    <a href="go:hamd">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/1b/ec/a0/1beca0f6a2f1656f454bb4bd493d319d.jpg">
+        </div>
+    </a>
+    <a href="go:nohay">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/f0/16/3f/f0163f8346493fd1a31e29cecf7e969b.jpg">
+        </div>
+    </a>
+    <a href="go:majlis">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/37/4f/dd/374fdd07c4c9752e7c7a1ec413f5208c.jpg">
+        </div>
+    </a>
+    <a href="go:farhan">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/b0/f6/69/b0f669dad8b67381a99a571f33bb97b2.jpg">
+        </div>
+    </a>
+    <a href="go:mukhtar">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/originals/5d/13/f1/5d13f164b0794a2e6122256cb1f18d2a.jpg">
+        </div>
+    </a>
+</div>
+
+<div class="nta">
+    <a href="go:cartoon"><h4 class="alignleft">KIDS SHOWS</h4><h4 class="alignright">See All</h4></a>
+</div>
+<div class="scrollmenu">
+    <a href="go:jungle">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/7e/d4/c6/7ed4c621530892450a19524cac5372cd.jpg">
+        </div>
+    </a>
+    <a href="go:bean">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/ed/bf/7a/edbf7a27f24f973de98e3d77fc09c048.jpg">
+        </div>
+    </a>
+    <a href="go:wild">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/63/a9/4e/63a94e98402aedd3c24e3d6abb27271b.jpg">
+        </div>
+    </a>
+    <a href="go:roll">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/21/c1/c0/21c1c0f241009a1c480fe8cb35a45418.jpg">
+        </div>
+    </a>
+    <a href="go:trance">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/21/0d/8f/210d8f2e9ffc45ac6090e77f3efaa88c.jpg">
+        </div>
+    </a>
+    <a href="go:crikey">
+        <div class="cen">
+            <img class="nt" src="https://i.pinimg.com/236x/0c/0c/42/0c0c42fcc3f2c33a75ef5c32261c8197.jpg">
+        </div>
+    </a>
+</div>
+
+<hr>
+<div>
+    <h1 style="color:#ff0000;"><font size="2">C</span><span style="color:#ff0800;">o</span><span style="color:#ff1100;">p</span><span style="color:#ff1900;">y</span><span style="color:#ff2200;">r</span><span style="color:#ff2a00;">i</span><span style="color:#ff3300;">g</span><span style="color:#ff3b00;">h</span><span style="color:#ff4400;">t</span><span style="color:#ff4c00;"> </span><span style="color:#ff5500;">©</span><span style="color:#ff5d00;"> </span><span style="color:#ff6600;">2</span><span style="color:#ff6e00;">0</span><span style="color:#ff7700;">2</span><span style="color:#ff7f00;">1</span><span style="color:#ff8800;">,</span><span style="color:#ff9000;"> </span><span style="color:#ff9900;">L</span><span style="color:#ffa100;">i</span><span style="color:#ffaa00;">v</span><span style="color:#ffb200;">e</span><span style="color:#ffbb00;"> </span><span style="color:#ffc300;">T</span><span style="color:#ffcc00;">V</span><span style="color:#ffd400;"> </span><span style="color:#ffdd00;">-</span><span style="color:#ffe500;"> </span><span style="color:#ffee00;">A</span><span style="color:#fff600;">l</span><span style="color:#ffff00;">l</span><span style="color:#efff00;"> </span><span style="color:#dfff00;">R</span><span style="color:#cfff00;">i</span><span style="color:#bfff00;">g</span><span style="color:#afff00;">h</span><span style="color:#9fff00;">t</span><span style="color:#8fff00;">s</span><span style="color:#80ff00;"> </span><span style="color:#70ff00;">R</span><span style="color:#60ff00;">e</span><span style="color:#50ff00;">s</span><span style="color:#40ff00;">e</span><span style="color:#30ff00;">r</span><span style="color:#20ff00;">v</span><span style="color:#10ff00;">e</span><span style="color:#00ff00;">d</span><span style="color:#00ff11;"> </span><span style="color:#00ff22;">B</span><span style="color:#00ff33;">y</span><span style="color:#00ff44;"> </span><span style="color:#00ff55;">S</span><span style="color:#00ff66;">y</span><span style="color:#00ff77;">e</span><span style="color:#00ff88;">d</span><span style="color:#00ff99;"> </span><span style="color:#00ffaa;">M</span><span style="color:#00ffbb;">u</span><span style="color:#00ffcc;">z</span><span style="color:#00ffdd;">a</span><span style="color:#00ffee;">m</span><span style="color:#00ffff;">m</span><span style="color:#00eeff;">i</span><span style="color:#00ddff;">l</span><span style="color:#00ccff;"> </span><span style="color:#00bbff;">S</span><span style="color:#00aaff;">h</span><span style="color:#0099ff;">a</span><span style="color:#0088ff;">h</span><span style="color:#0077ff;"> </span><span style="color:#0066ff;">B</span><span style="color:#0055ff;">u</span><span style="color:#0044ff;">k</span><span style="color:#0033ff;">h</span><span style="color:#0022ff;">a</span><span style="color:#0011ff;">r</span><span style="color:#0000ff;">i</h1>
+</div>
+
+<p style="display: none" id="adjust">30</p>
+
+<div style="font-weight: bold; border:border-radius: 100%; color: gold; font-size: 30px; position: fixed; top: 0px;margin-left: 0px;margin-right: 0px;">
+
+<div id="HeadCarousel" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#HeadCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#HeadCarousel" data-slide-to="1"></li>
+        <li data-target="#HeadCarousel" data-slide-to="2"></li>
+        <li data-target="#HeadCarousel" data-slide-to="3"></li>
+    </ol>
+    <div class="carousel-inner">
+        <div class="item active">
+            <a class="item">
+                <img src="https://i.pinimg.com/736x/be/fc/73/befc735911f4c21e5338b3c476e8fc03.jpg">
+                <div class="carousel-caption cap">
+                    <h3></h3>
+                </div>
+            </a>
+        </div>
+        <div class="item">
+            <img src="https://i.pinimg.com/originals/16/10/39/1610396c195d7182f1505585552b0c66.jpg">
+            <div class="carousel-caption cap">
+                <h3></h3>
+            </div>
+        </div>
+        <div class="item">
+            <img src="https://i.pinimg.com/originals/6d/7d/31/6d7d31e214e0728cc33858fb6afb679b.jpg">
+            <div class="carousel-caption cap">
+                <h3></h3>
+            </div>
+        </div>
+        <div class="item">
+            <img src="https://i.pinimg.com/originals/d3/01/20/d30120846a1aefca532e4f463830cc14.jpg">
+            <div class="carousel-caption cap">
+                <h3></h3>
+            </div>
+        </div>
+        <div class="item">
+            <img src="https://i.pinimg.com/originals/cb/e4/6f/cbe46f6b6bab7f34e62149e2f877cf41.jpg">
+            <div class="carousel-caption cap">
+                <h3></h3>
+            </div>
+        </div>
+        <div class="item">
+            <img src="https://i.pinimg.com/originals/31/49/71/3149713ae3b443fa09f49210f7ff0678.jpg">
+            <div class="carousel-caption cap">
+                <h3></h3>
+            </div>
+        </div>
+        <div class="item">
+            <img src="https://i.pinimg.com/originals/05/75/90/057590e5eb121dc6809aa29de4241068.jpg">
+            <div class="carousel-caption cap">
+                <h3></h3>
+            </div>
+        </div>
+        <div class="item">
+            <img src="https://i.pinimg.com/originals/aa/0c/a2/aa0ca2a40bd89f76c37f2521576f8f38.webp">
+            <div class="carousel-caption cap">
+                <h3></h3>
+            </div>
+        </div>
+        <div class="item">
+            <img src="https://i.pinimg.com/originals/20/0f/ef/200fef611b1ebc96f713f599d2e1ac91.webp">
+            <div class="carousel-caption cap">
+                <h3></h3>
+            </div>
+        </div>
+    </div>
+    <a class="left carousel-control" href="#HeadCarousel" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a class="right carousel-control" href="#HeadCarousel" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+</div>
+
+<p style="display: none" id="adjust">30</p>
+
+<div style="font-weight: bold; border:border-radius: 100%; color: gold; font-size: 30px; position: fixed; top: 120px;margin-left: 0px;margin-right: 0px;">
+    <img src="https://i.ibb.co/5jMQqPn/Line-street-png.png" width="360" height="90">
+</div>
+
+</body>
+</html>
