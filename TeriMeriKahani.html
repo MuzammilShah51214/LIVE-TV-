@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern YouTube Player</title>
+    <style>
+        :root {
+            --primary-color: #ff0000;
+            --primary-hover: #cc0000;
+            --dark-bg: #0f0f0f;
+            --light-text: #f1f1f1;
+            --dark-text: #272727;
+            --button-bg: #333;
+            --button-hover: #444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            min-height: 100vh;
+            padding-top: 0px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+        
+        .fixed-player {
+            position: sticky;
+            top: 0px;
+            z-index: 100;
+            width: 350px;
+            margin-bottom: 10px;
+            background-color: var(--dark-bg);
+        }
+        
+        .player-container {
+            position: relative;
+            width: 365px;
+            right: 16px;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background-color: #000;
+            transform: scale(0.98);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .player-container:hover {
+            transform: scale(1);
+            box-shadow: 0 15px 30px rgba(255, 0, 0, 0.2);
+        }
+        
+        .player-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .player-container:hover .player-cover {
+            opacity: 1;
+        }
+        
+        #youtube-player {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            width: 365px;
+            height: 200px;
+            border: none;
+        }
+        
+        /* Custom Controls */
+        .custom-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .player-container:hover .custom-controls {
+            opacity: 1;
+        }
+        
+        .control-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .volume-slider {
+            width: 80px;
+            height: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #555;
+            outline: none;
+            border-radius: 2px;
+            transition: opacity 0.2s;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        .volume-slider::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        /* Progress bar container below player */
+        .progress-container-below {
+            width: 365px;
+            margin-top: 10px;
+            margin-left: -16px;
+        }
+        
+        .progress-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .progress-container {
+            flex-grow: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            border-radius: 12px;
+        }
+        
+        .time-display {
+            font-size: 12px;
+            color: #aaa;
+            min-width: 100px;
+            text-align: center;
+        }
+        
+        /* Skip buttons container */
+        .skip-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        .skip-btn {
+            pointer-events: auto;
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin: 0 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.2s ease;
+        }
+        
+        .player-container:hover .skip-btn {
+            opacity: 1;
+        }
+        
+        .skip-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        /* Hide ALL YouTube branding elements */
+        .ytp-watermark,
+        .ytp-title-channel,
+        .ytp-title-link,
+        .ytp-chrome-top-buttons,
+        .ytp-show-cards-title,
+        .ytp-gradient-top,
+        .ytp-branding-logo,
+        .ytp-branding-icon,
+        .ytp-branding-name,
+        .ytp-cards-button-icon,
+        .ytp-cards-teaser,
+        .ytp-cards-teaser-box {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
+        
+        .video-info {
+            background-color: #222;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .video-info:hover {
+            background-color: #2a2a2a;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.1);
+        }
+        
+        .video-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--light-text);
+        }
+        
+        .video-stats {
+            display: flex;
+            gap: 15px;
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        .status-bar {
+            padding: 10px;
+            background-color: #333;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+            transition: all 0.3s ease;
+        }
+        
+        .status-bar.loading {
+            display: block;
+            background: linear-gradient(90deg, #ff9800, #ffc107, #ff9800);
+            background-size: 200% auto;
+            color: #000;
+            animation: loadingGradient 2s linear infinite;
+        }
+        
+        .status-bar.playing {
+            display: block;
+            background: linear-gradient(90deg, #4caf50, #8bc34a, #4caf50);
+            color: white;
+        }
+        
+        .status-bar.error {
+            display: block;
+            background: linear-gradient(90deg, #f44336, #ff5722, #f44336);
+            background-size: 200% auto;
+            color: white;
+            animation: errorPulse 1.5s ease infinite;
+        }
+        
+        /* Geo News Branding Styles - Below Progress Bar */
+        .geo-branding-below {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 365px;
+            margin-top: 15px;
+            margin-left: -16px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+        }
+        
+        .geo-logo-container {
+            position: relative;
+            width: 100px;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .geo-logo-border {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            animation: rotate 4s linear infinite;
+            box-sizing: border-box;
+        }
+        
+        .geo-logo-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 400%;
+            border-radius: 50%;
+            opacity: 0;
+            transition: 0.5s;
+            animation: animate 20s linear infinite;
+        }
+        
+        .geo-logo-container:hover .geo-logo-border::before {
+            opacity: 1;
+            z-index: 0;
+        }
+        
+        .geo-logo-img {
+        	top: 10px;
+            width: 90px;
+            height: 110px;
+            border-radius: 5%;
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .geo-branding-text {
+            flex-grow: 1;
+            text-align: right;
+            padding-right: 15px;
+        }
+        
+        .geo-branding-text p:first-child {
+            font-weight: bold;
+            font-size: 18px;
+            background: linear-gradient(to right, #ff0000, #ff8c00, #ff0, #0f0, #00f, #4b0082, #ee82ee);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 300% 300%;
+            animation: gradient 5s ease infinite;
+            margin-bottom: 3px;
+            letter-spacing: 1px;
+        }
+        
+        .geo-branding-text p:last-child {
+            font-size: 12px;
+            color: #ccc;
+            font-style: italic;
+            margin-top: 0;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        
+        @keyframes loadingGradient {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        @keyframes errorPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Animations */
+        @keyframes animate {
+            0% {
+                background-position: 0 0;
+            }
+            50% {
+                background-position: 300% 0;
+            }
+            100% {
+                background-position: 0 0;
+            }
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .player-container {
+                transform: none;
+            }
+            
+            .player-container:hover {
+                transform: none;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="fixed-player">
+            <div class="player-container">
+                <div class="player-cover"></div>
+                <iframe id="youtube-player" 
+                        src="https://www.youtube.com/embed/irZPTn1wuAU?enablejsapi=1&rel=0&modestbranding=1&controls=0&showinfo=0&autoplay=1&mute=1" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen></iframe>
+                
+                <!-- Skip controls -->
+                <div class="skip-controls">
+                    <button class="skip-btn skip-back-btn">⏮ 15s</button>
+                    <button class="skip-btn skip-forward-btn">⏭ 30s</button>
+                </div>
+                
+                <!-- Custom Controls -->
+                <div class="custom-controls">
+                    <button class="control-btn play-pause-btn">⏯</button>
+                    <div class="volume-control">
+                        <button class="control-btn mute-btn">🔇</button>
+                        <input type="range" class="volume-slider" min="0" max="100" value="50">
+                    </div>
+                    <button class="control-btn fullscreen-btn">⛶</button>
+                </div>
+            </div>
+            
+            <!-- Progress bar and time display below player -->
+            <div class="progress-container-below">
+                <div class="progress-wrapper">
+                    <div class="progress-container" id="progress-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                    <div class="time-display" id="time-display">0:00 / 0:00</div>
+                </div>
+            </div>
+            
+            <!-- Geo News Branding Below Progress Bar -->
+            <div class="geo-branding-below">
+                <div class="geo-logo-container">
+                    <div class="geo-logo-border"></div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRVAWBYHcCLPVfWZy3yJX6HxZa0A5HmEq_mGjw_0QxIa5WfJsnkutH81Kf&s=10"height="110"width="90" alt="TERI MERI KAHANI">
+                </div>
+                <div class="geo-branding-text">
+                    <p>Teri Meri Kahani</p>
+                    <p>GeoHarPal Broadcast</p>
+                </div>
+            </div>
+            
+            <div id="status-bar" class="status-bar"></div>
+        </div>
+        
+        <div class="video-info">
+            <div class="video-title" id="video-title">Now Playing: Loading...</div>
+            <div class="video-stats">
+                <span id="view-count">0 views</span>
+                <span id="like-count">0 likes</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load YouTube API
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        
+        let player;
+        const statusBar = document.getElementById('status-bar');
+        const videoTitle = document.getElementById('video-title');
+        const timeDisplay = document.getElementById('time-display');
+        const progressBar = document.getElementById('progress-bar');
+        const progressContainer = document.getElementById('progress-container');
+        let isFirstPlay = true;
+        let updateInterval;
+        
+        // Video data with titles
+        const videoData = {
+            'ZUz0CYwOcP0': { 
+                title: 'Sample Video', 
+                views: '1.2M views', 
+                likes: '85K likes'
+            }
+        };
+        
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange,
+                    'onError': onPlayerError
+                }
+            });
+        }
+        
+        function onPlayerReady(event) {
+            updateVideoInfo('ZUz0CYwOcP0');
+            updateStatus('ready');
+            
+            // Set initial volume
+            player.setVolume(50);
+            
+            // Start muted playback (required for autoplay in most browsers)
+            player.mute();
+            player.playVideo();
+            
+            // Setup custom controls
+            setupCustomControls();
+            
+            // Update mute button to show muted state
+            document.querySelector('.mute-btn').textContent = '🔇';
+            
+            // Hide YouTube branding elements
+            hideYouTubeBranding();
+            
+            // Start progress update interval
+            updateInterval = setInterval(updateProgress, 1000);
+        }
+        
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+        }
+        
+        function updateProgress() {
+            if (player && player.getCurrentTime) {
+                const currentTime = player.getCurrentTime();
+                const duration = player.getDuration();
+                
+                if (duration > 0) {
+                    const progressPercent = (currentTime / duration) * 100;
+                    progressBar.style.width = `${progressPercent}%`;
+                    
+                    // Update time display
+                    timeDisplay.textContent = `${formatTime(currentTime)} / ${formatTime(duration)}`;
+                }
+            }
+        }
+        
+        function hideYouTubeBranding() {
+            // Hide watermark and other branding elements
+            const iframe = document.getElementById('youtube-player');
+            if (iframe && iframe.contentWindow) {
+                try {
+                    // This is a fallback in case CSS doesn't catch everything
+                    iframe.contentWindow.postMessage('{"event":"command","func":"setOption","args":["modestbranding",1]}', '*');
+                    iframe.contentWindow.postMessage('{"event":"command","func":"setOption","args":["showinfo",0]}', '*');
+                } catch (e) {
+                    console.log('Error hiding branding:', e);
+                }
+            }
+        }
+        
+        function setupCustomControls() {
+            const playPauseBtn = document.querySelector('.play-pause-btn');
+            const muteBtn = document.querySelector('.mute-btn');
+            const volumeSlider = document.querySelector('.volume-slider');
+            const fullscreenBtn = document.querySelector('.fullscreen-btn');
+            const skipBackBtn = document.querySelector('.skip-back-btn');
+            const skipForwardBtn = document.querySelector('.skip-forward-btn');
+            
+            // Play/Pause button
+            playPauseBtn.addEventListener('click', () => {
+                if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+                    player.pauseVideo();
+                    playPauseBtn.textContent = '▶';
+                } else {
+                    player.playVideo();
+                    playPauseBtn.textContent = '⏸';
+                }
+            });
+            
+            // Mute button
+            muteBtn.addEventListener('click', () => {
+                if (player.isMuted()) {
+                    player.unMute();
+                    muteBtn.textContent = '🔊';
+                } else {
+                    player.mute();
+                    muteBtn.textContent = '🔇';
+                }
+            });
+            
+            // Volume slider
+            volumeSlider.addEventListener('input', (e) => {
+                const volume = e.target.value;
+                player.setVolume(volume);
+                
+                // Update mute button if volume is 0
+                if (volume == 0) {
+                    muteBtn.textContent = '🔇';
+                } else {
+                    muteBtn.textContent = '🔊';
+                }
+            });
+            
+            // Fullscreen button
+            fullscreenBtn.addEventListener('click', () => {
+                const iframe = document.getElementById('youtube-player');
+                if (iframe.requestFullscreen) {
+                    iframe.requestFullscreen();
+                } else if (iframe.webkitRequestFullscreen) {
+                    iframe.webkitRequestFullscreen();
+                } else if (iframe.msRequestFullscreen) {
+                    iframe.msRequestFullscreen();
+                }
+            });
+            
+            // Skip back 15 seconds
+            skipBackBtn.addEventListener('click', () => {
+                const currentTime = player.getCurrentTime();
+                player.seekTo(Math.max(0, currentTime - 15), true);
+            });
+            
+            // Skip forward 30 seconds
+            skipForwardBtn.addEventListener('click', () => {
+                const currentTime = player.getCurrentTime();
+                player.seekTo(currentTime + 30, true);
+            });
+            
+            // Progress bar click to seek
+            progressContainer.addEventListener('click', (e) => {
+                const rect = e.target.getBoundingClientRect();
+                const percent = (e.clientX - rect.left) / rect.width;
+                player.seekTo(player.getDuration() * percent);
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                // Space for play/pause
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    playPauseBtn.click();
+                }
+                // M for mute
+                else if (e.code === 'KeyM') {
+                    e.preventDefault();
+                    muteBtn.click();
+                }
+                // F for fullscreen
+                else if (e.code === 'KeyF') {
+                    e.preventDefault();
+                    fullscreenBtn.click();
+                }
+                // Arrow left for skip back
+                else if (e.code === 'ArrowLeft') {
+                    e.preventDefault();
+                    skipBackBtn.click();
+                }
+                // Arrow right for skip forward
+                else if (e.code === 'ArrowRight') {
+                    e.preventDefault();
+                    skipForwardBtn.click();
+                }
+                // Arrow up/down for volume
+                else if (e.code === 'ArrowUp') {
+                    e.preventDefault();
+                    const newVolume = Math.min(100, player.getVolume() + 10);
+                    player.setVolume(newVolume);
+                    volumeSlider.value = newVolume;
+                }
+                else if (e.code === 'ArrowDown') {
+                    e.preventDefault();
+                    const newVolume = Math.max(0, player.getVolume() - 10);
+                    player.setVolume(newVolume);
+                    volumeSlider.value = newVolume;
+                }
+            });
+        }
+        
+        function onPlayerStateChange(event) {
+            const playPauseBtn = document.querySelector('.play-pause-btn');
+            
+            if (event.data === YT.PlayerState.PLAYING) {
+                updateStatus('playing');
+                playPauseBtn.textContent = '⏸';
+                
+                // Unmute and go fullscreen on first play
+                if (isFirstPlay) {
+                    isFirstPlay = false;
+                    player.unMute();
+                    document.querySelector('.mute-btn').textContent = '🔊';
+                    
+                    // Enter fullscreen
+                    const iframe = document.getElementById('youtube-player');
+                    if (iframe.requestFullscreen) {
+                        iframe.requestFullscreen();
+                    } else if (iframe.webkitRequestFullscreen) {
+                        iframe.webkitRequestFullscreen();
+                    } else if (iframe.msRequestFullscreen) {
+                        iframe.msRequestFullscreen();
+                    }
+                    
+                    // Lock to landscape on mobile devices
+                    if (screen.orientation && screen.orientation.lock) {
+                        screen.orientation.lock('landscape').catch(() => {
+                            console.log('Orientation lock not supported');
+                        });
+                    }
+                }
+            } else if (event.data === YT.PlayerState.PAUSED) {
+                playPauseBtn.textContent = '▶';
+            } else if (event.data === YT.PlayerState.BUFFERING) {
+                updateStatus('loading');
+            } else if (event.data === YT.PlayerState.ENDED) {
+                // Auto-play next episode when current ends
+                const currentId = player.getVideoData().video_id;
+                const buttons = document.querySelectorAll('.neon-btn');
+                let nextButton = null;
+                
+                buttons.forEach((btn, index) => {
+                    if (btn.getAttribute('data-id') === currentId && index < buttons.length - 1) {
+                        nextButton = buttons[index + 1];
+                    }
+                });
+                
+                if (nextButton) {
+                    setTimeout(() => {
+                        nextButton.click();
+                    }, 2000);
+                }
+            }
+        }
+        
+        function onPlayerError(event) {
+            updateStatus('error', 'Error loading video');
+        }
+        
+        function updateStatus(status, message = '') {
+            statusBar.className = 'status-bar';
+            
+            switch(status) {
+                case 'loading':
+                    statusBar.classList.add('loading');
+                    statusBar.textContent = 'Loading video...';
+                    break;
+                case 'playing':
+                    statusBar.classList.add('playing');
+                    statusBar.textContent = 'Now playing';
+                    setTimeout(() => statusBar.style.display = 'none', 2000);
+                    break;
+                case 'ready':
+                    statusBar.classList.add('playing');
+                    statusBar.textContent = 'Player ready';
+                    setTimeout(() => statusBar.style.display = 'none', 2000);
+                    break;
+                case 'error':
+                    statusBar.classList.add('error');
+                    statusBar.textContent = message || 'Error occurred';
+                    break;
+                default:
+                    statusBar.style.display = 'none';
+            }
+        }
+        
+        function updateVideoInfo(videoId) {
+            const video = videoData[videoId] || { 
+                title: 'Episode: ' + (document.querySelectorAll('.neon-btn[data-id="' + videoId + '"]')[0]?.textContent || 'Unknown'),
+                views: 'N/A views', 
+                likes: 'N/A likes'
+            };
+            
+            videoTitle.textContent = "Now Playing: " + video.title;
+            document.getElementById('view-count').textContent = video.views;
+            document.getElementById('like-count').textContent = video.likes;
+        }
+        
+        // Clean up interval when page unloads
+        window.addEventListener('beforeunload', () => {
+            if (updateInterval) {
+                clearInterval(updateInterval);
+            }
+        });
+    </script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</body>
+</html>
