@@ -1,0 +1,528 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indian TV Channels</title>
+  <style>
+    /* Loader Styles */
+    .loader-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      flex-direction: column;
+    }
+    
+    .loader {
+      width: 80px;
+      height: 80px;
+      position: relative;
+    }
+    
+    .loader-circle {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 8px solid transparent;
+      border-top-color: #2ecc71;
+      border-radius: 50%;
+      animation: spin 1.5s linear infinite;
+    }
+    
+    .loader-circle:nth-child(2) {
+      border-top-color: #e74c3c;
+      animation-delay: 0.3s;
+    }
+    
+    .loader-circle:nth-child(3) {
+      border-top-color: #3498db;
+      animation-delay: 0.6s;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .loader-text {
+      color: white;
+      font-family: Arial, sans-serif;
+      margin-top: 20px;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+    
+    /* Video Player Container */
+    .video-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .video-frame {
+      width: 98%;
+      max-width: 1000px;
+      height: 100vh;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    /* Main Content */
+    .content {
+      display: none;
+      padding: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      color: white;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    /* Button Container */
+    .button-container {
+      display: flex;
+      gap: 15px;
+      padding: 10px;
+      border-radius: 6px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .image-button {
+      width: 220px;
+      height: 70px;
+      border: 5px solid #ddd;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+      object-fit: cover;
+    }
+
+    .image-button:hover {
+      transform: translateY(-5px);
+      border-color: #2ecc71;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+
+    /* Different hover effects */
+    a:nth-child(1) .image-button:hover {
+      border-color: #D5CED2;
+    }
+    a:nth-child(2) .image-button:hover {
+      border-color: #A91F6B;
+    }
+    a:nth-child(3) .image-button:hover {
+      border-color: #1840C6;
+    }
+    a:nth-child(4) .image-button:hover {
+      border-color: #9b59b6;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 1em;
+      color: #666;
+      margin-top: 30px;
+    }
+    
+    body {
+      background-color: #000000;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: -50px;
+      right: 20px;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 15;
+    }
+    
+    .player-wrapper {
+      position: relative;
+      width: 1000;
+      max-width: 1000px;
+    }
+    
+    .pagination {
+      text-align: center;
+      margin: 30px 0;
+    }
+    
+    .next-page-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+    
+    
+      .image-button {
+        width: 123px;
+        height: 130px;
+      }
+      
+      .video-frame {
+        height: 60vh;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .image-button {
+        width: 120px;
+        height: 180px;
+      }
+      
+      .loader-text {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loader -->
+  <div class="loader-container" id="loader">
+    <div class="loader">
+      <div class="loader-circle"></div>
+      <div class="loader-circle"></div>
+      <div class="loader-circle"></div>
+    </div>
+    <div class="loader-text">Loading Channels</div>
+  </div>
+  
+  <!-- Video Player Container -->
+  <div class="video-container" id="videoContainer">
+    <div class="player-wrapper">
+      <button class="close-btn" id="closeBtn" title="Close player">X</button>
+      <iframe class="video-frame" id="videoFrame" allowfullscreen></iframe>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="content" id="content">
+    <h1>Indian TV Channels</h1>
+    
+    <div class="button-container">
+      <a href="#" data-video="https://host.mafiatv.live/toffee/?play=and_tv_hd">
+        <img src="https://i.pinimg.com/736x/54/81/5b/54815b07160b81c1e02c18eb6b7ca99c.jpg" alt="AND TV HD" class="image-button">
+      </a>   
+
+      <a href="#" data-video="https://host.mafiatv.live/toffee/?play=zee_tv_hd">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD_buo9G4JCRRTMYgoOtB_oMCgk2Ov6BJPArgDZ21wxDm-uNQrpYGo1lE&s=10" alt="Zee TV HD" class="image-button">
+      </a>   
+      
+      <a href="#" data-video="https://host.mafiatv.live/toffee/?play=zee_cinema_hd">
+        <img src="https://i.pinimg.com/736x/7e/b2/de/7eb2de5e7c229ac134e527d88817525e.jpg" alt="Zee Cinema HD" class="image-button">
+      </a>
+     
+      <a href="#" data-video="//cdn.stmify.com/embed-free.php?id=SONY_ENTERTAINMENT_TELEVISION">
+        <img src="https://stmify.com/wp-content/uploads/2024/11/268-s-768x432.webp" alt="Sony TV" class="image-button">
+      </a>
+    </div>
+    
+    <div class="button-container">  
+      
+   <a href="#" data-video="https://host.mafiatv.live/toffee/?play=sonyentertainmnt_hd">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcxn7xip_EiukF1zEbM-OAXiHusUIg3IqRsQ&s" alt="Button 3" class="image-button">
+      </a>   
+      
+      
+      
+
+
+     
+      <a href="#" data-video="https://cdn.stmify.com/embed-free.php?id=SONY_SAB">
+        <img src="https://stmify.com/wp-content/uploads/2024/11/270-s-768x432.webp" alt="Button 3" class="image-button">
+      </a>
+      
+      <a href="#" data-video="https://host.mafiatv.live/toffee/?play=sonysab_hd">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK9gBNfVp4Xrcz39AenBJXiJINYyTcJqoBeUPZ-gGAdTNhpt84ZTobszBg&s=10" alt="Button 3" class="image-button">
+      </a>
+      
+      
+      
+    
+
+      <a href="#" data-video="https://cdn.stmify.com/embed-free.php?id=SONY_MAX">
+        <img src="https://stmify.com/wp-content/uploads/2024/08/108-s.webp" alt="Button 4" class="image-button">
+      </a>
+      </div>
+      
+      
+      
+      
+      
+      <div class="button-container">
+      <a href="#" data-video="https://host.mafiatv.live/toffee/?play=sonymax_2">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEvIRLi-tdeMRzhIIS2YtEQIyDOLQnQOu8VuoOPNxvuRJhdsz8xGqEp7mv&s=10" alt="Button 4" class="image-button">
+      </a>
+      
+      <a href="#" data-video="https://cdn.stmify.com/embed-free.php?id=SONY_YAY">
+        <img src="https://stmify.com/wp-content/uploads/2024/09/162-s-768x432.webp" alt="Button 3" class="image-button">
+      </a>
+      
+      
+      <a href="#" data-video="https://host.mafiatv.live/toffee/?play=sonypix_hd">
+        <img src="https://i.pinimg.com/736x/49/f4/f6/49f4f6f0c177b64c5609180e169b669d.jpg" alt="Button 3" class="image-button">
+      </a>
+      
+      
+      <a href="#" data-video="//cdn.stmify.com/embed-free.php?id=SONY_BBC_EARTH">
+        <img src="https://stmify.com/wp-content/uploads/2024/09/158-s-768x432.webp" alt="Button 4" class="image-button"></a>
+      </div>
+      
+      
+      
+    
+
+
+
+<div class="button-container">
+ <a href="#" data-video="https://host.mafiatv.live/toffee/?play=sony_sports_1_hd">
+        <img src="https://the-media-ant.mo.cloudinary.net/medias/58089c77f297cb205707c9cf/1693896536083/star sports ten1_logo.svg?tx=w_350" alt="Button 4" class="image-button">
+      </a>   
+  
+     
+      
+     <a href="#" data-video="https://host.mafiatv.live/toffee/?play=sony_sports_2_hd">
+        <img src="https://the-media-ant.mo.cloudinary.net/medias/5808a7fef297cb205707cad4/1693896571123/star sports ten 2_logo.svg?tx=w_350" alt="Button 4" class="image-button">
+      </a>   
+
+ <a href="#" data-video="https://host.mafiatv.live/toffee/?play=sony_sports_5_hd">
+        <img src="https://the-media-ant.mo.cloudinary.net/uploads/mediaLogos/1693566124160/10 Sony Sports Ten 5 HD.svg?tx=w_350" alt="Button 4" class="image-button">
+      </a>   
+      
+      
+      
+
+ <a href="#" data-video="https://host.mafiatv.live/toffee/?play=b4u_movies">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAWifYfL_lEf2mmgq4yBF5v7uiMDpUsm3fAJ5n5jyBjyruGFldqensrJs&s=10" alt="Button 4" class="image-button">
+      </a>   
+      </div> 
+      
+      
+      
+      
+     <div class="button-container">
+      <a href="#" data-video="https://host.mafiatv.live/toffee/?play=b4u_music">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRuNB72yJDgoeEVyGFxNla8ImOEz8ENYByzt6L2fK7sKZRPWHabre1zYg&s=10 " alt="b4u music" class="image-button">
+      </a>  
+ 
+      <a href="#" data-video="https://host.mafiatv.live/toffee/?play=andpicture_hd">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCeIOPVVROC_tlej8MIXLygFsQAv5Il7uk9HPyCtHm3N6STZ00WTRSGnga&s=10" alt="Button 4" class="image-button">
+      </a> 
+
+  
+      <a href="#" data-video="https://host.mafiatv.live/toffee/?play=cartoon_network_sd">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR0xyAx1r8UZpY7UyNca4PUNYgLavORn-lEMg7IH2k_4_RJYM6fVdpazo&s=10" alt="Button 4" class="image-button">
+      </a>   
+  
+      
+      
+ 
+ <a href="#" data-video="https://host.mafiatv.live/toffee/?play=cartoon_network_hd">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYtqVS2zI8zcmz_Li6xNhCvfbjmCPNsmGQrFOOvScdKvJ5WhjfbVKSve8q&s=10" alt="Button 4" class="image-button">
+      </a>   
+      </div> 
+      
+      
+      <div class="button-container">
+      <a href="#" data-video="https://host.mafiatv.live/toffee/?play=pogo_sd">
+        <img src="https://i.pinimg.com/736x/48/12/00/481200014c9442daf67e9faaac2ec098.jpg" alt="Button 4" class="image-button">
+      </a>  
+ 
+      <a href="#" data-video="https://host.mafiatv.live/toffee/?play=discovery_kids">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0_W3wfwSyPN5CPNwlRahRNFqIN11-EcSKpQm1rYDHjr5L8y6h5O057v0&s=10" alt="Button 4" class="image-button">
+      </a>   
+      <a href="#" data-video="https://host.mafiatv.live/toffee/?play=discovery_science">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7C3xSlqeLLxVgRLNd4UEeKWDCG_c-04OaklTCshZfzLH8u8VUnN23YZ0&s=10" alt="Button 4" class="image-button">
+      </a>   
+  
+       
+      
+      
+ <a href="#" data-video="https://host.mafiatv.live/toffee/?play=discovery_turbo">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6yXnfstAf_WQGHV7XU5f7os8-jvQkGi2E6tjy4Rs5r3AFlCD0qEj_7oov&s=10" alt="Button 4" class="image-button">
+      </a>   </div>    
+      
+      
+      
+      <div class="button-container">
+      <a href="#" data-video="https://host.mafiatv.live/toffee/?play=discovery_sd">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaa0HVV5yQ5vJnt2L9WJyU7eXMyc9Buo-hYLy43KttVhfoWzn0IeUoGuWP&s=10" alt="Button 4" class="image-button">
+      </a>  
+ 
+      <a href="#" data-video="https://host.mafiatv.live/toffee/?play=discovery_sd">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyzblwNxA7zPb4zQRl3rZdV9TK0ZBAXKD_BA&s " alt="Button 4" class="image-button">
+      </a>   
+      <a href="#" data-video="https://host.mafiatv.live/toffee/?play=discovary_investigation_hd">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Investigation_Discovery_Logo_2020.png " alt="Button 4" class="image-button">
+      </a>   
+  
+  
+  <a href="#" data-video="https://host.mafiatv.live/toffee/?play=animal_planet_sd">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlLFk5NVfJ917t9MzoVIg5KbHqYu6kojZwVfBlX5ccQ8g1v2lYTNXz5XQ&s=10" alt="Button 4" class="image-button">
+      </a>   
+  
+  
+     </div> 
+     <div class="button-container">
+     <a href="#" data-video="https://host.mafiatv.live/toffee/?play=animal_planet_hd">
+        <img src="https://jiotvimages.cdn.jio.com/dare_images/images/Animal_Planet_HD.png " alt="Button 4" class="image-button">
+      </a>   
+  
+  
+  <a href="#" data-video="https://host.mafiatv.live/toffee/?play=tlc_sd">
+        <img src="https://i.pinimg.com/736x/3f/db/72/3fdb72f873316f03c72ff693d86e2240.jpg " alt="Button 4" class="image-button">
+      </a>   
+     
+     <a href="#" data-video="https://host.mafiatv.live/toffee/?play=tlc_hd">
+        <img src="https://i.pinimg.com/736x/4e/9a/dc/4e9adcd39956b63fd0d1c92c02ffc7dc.jpg " alt="Button 4" class="image-button">
+      </a>   
+     
+     <a href="#" data-video="https://host.mafiatv.live/toffee/?play=ten_cricket">
+        <img src="https://i.pinimg.com/736x/5c/9e/31/5c9e31d76dc6d2e2266688a915feab61.jpg" alt="Button 4" class="image-button">
+      </a>   
+     </div> 
+     
+     
+    
+    
+    <div class="button-container">
+       <a href="#" data-video="https://moblive.yuppcdn.net/drm1/smil:starsportsselect1drm.smil/manifest.m3u8">
+        <img src="https://the-media-ant.mo.cloudinary.net/medias/5989a68c420c3c1917b60295/1600329045685/683_logo.jpg?tx=w_350" alt="Button 4" class="image-button">
+      </a>   
+           
+           
+           
+           
+           
+      <a href="#" data-video="https://tv.bdixtv24.co/sports/sportstv.php?c=star1in">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj8soRFuQsNkWIq3UwYNHr8-DgsH_85Om5OJRwO5S8Rf9CR7yDGm3p3OyY&s=10" alt="Button 4" class="image-button">
+      </a>   
+      
+      <a href="#" data-video="https://tv.bdixtv24.co/ayna/play.php?id=f1e1b6c8-9a1b-492d-bdf9-b63295e6073e">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1nT-8cORa8RCe8rPDra3OzKg8qmZI3MEKNA&s" alt="Button 4" class="image-button">
+      </a>   
+      
+      
+
+      <a href="#" data-video="https://m3u8player.org/player.html?url=https://live-dangal.akamaized.net/liveabr/playlist.m3u8">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZVdJd4MXRZHyi2Au0sLtyeOBP1prv4nDxXZ7_UlvVox5YeEhTUywNzxqZ&s=10" alt="Button 4" class="image-button">
+      </a>   
+    </div> 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="pagination">
+      <a href="https://rawcdn.githack.com/MuzammilShah51214/LIVE-TV-/ddef7f540e29a6636db3d5a28e0f6bc931883ed7/INDIAN-CHANNELS-PAGE-03.html">
+        <button class="next-page-btn">
+          <img src="https://i.ibb.co/1f9QXJFB/Next.png" alt="Next Page" height="80" width="120">
+        </button>
+      </a>
+    </div>
+    
+    <footer>
+      <p>&copy; 2025 IndianTV/Syed Muzammil-Shah. All rights reserved.</p>
+    </footer>
+  </div>
+  
+  <script>
+    // Simulate loading time
+    setTimeout(function() {
+      document.getElementById('loader').style.display = 'none';
+      document.getElementById('content').style.display = 'block';
+    }, 2000);
+    
+    // Video player functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const videoContainer = document.getElementById('videoContainer');
+      const videoFrame = document.getElementById('videoFrame');
+      const closeBtn = document.getElementById('closeBtn');
+      
+      // Get all video links
+      const videoLinks = document.querySelectorAll('[data-video]');
+      
+      // Add click event to each link
+      videoLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const videoUrl = this.getAttribute('data-video');
+          
+          // Ensure proper URL protocol
+          let finalUrl = videoUrl;
+          if (videoUrl.startsWith('//')) {
+            finalUrl = window.location.protocol + videoUrl;
+          }
+          
+          // Set the iframe source
+          videoFrame.src = finalUrl;
+          
+          // Show the video container
+          videoContainer.style.display = 'flex';
+        });
+      });
+      
+      // Close button functionality
+      closeBtn.addEventListener('click', function() {
+        videoFrame.src = '';
+        videoContainer.style.display = 'none';
+      });
+      
+      // Close when clicking outside video
+      videoContainer.addEventListener('click', function(e) {
+        if (e.target === videoContainer) {
+          videoFrame.src = '';
+          videoContainer.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
