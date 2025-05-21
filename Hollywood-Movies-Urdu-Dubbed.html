@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="zXONLygeAVWrh74mEg82ZngIYQTh7GDVweewewYh">
+    <title>Zong Mobile TV</title>
+    <link rel="shortcut icon" type="image/x-icon" href="https://zongmobiletv.com/assets/images/favicon1.svg">
+    
+    <!-- VideoJs CSS -->
+    <link rel="stylesheet" href="https://zongmobiletv.com/assets/player/video-js.css">
+    <link rel="stylesheet" href="https://zongmobiletv.com/assets/player/dist/videojs-seek-buttons.css">
+    <link rel="stylesheet" href="https://zongmobiletv.com/assets/player/plugins/tube-skin/videojs-tube.min.css">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://zongmobiletv.com/assets/css/bootstrap.min.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            background-color: #000000;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            padding-bottom: 40px;
+        }
+        
+        .fixed-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: #000;
+            box-shadow: 0 4px 20px rgba(236, 0, 128, 0.3);
+        }
+        
+        .video-container {
+            width: 100%;
+            height: 360px;
+        }
+        
+        #my-video {
+            width: 100%;
+            height: 100%;
+            outline: none;
+        }
+        
+        #my-video:focus-visible {
+            outline: 2px solid #ec0080;
+        }
+        
+        .video-js {
+            font-size: 10px;
+        }
+        
+        .backbtn {
+            filter: invert(1);
+            height: 3rem;
+            width: 3rem;
+            margin: 20px;
+            position: absolute;
+            z-index: 1001;
+            transition: transform 0.3s ease;
+        }
+        
+        .backbtn:hover {
+            transform: scale(1.2);
+        }
+        
+        .controls-container {
+            background-color: #111;
+            padding: 10px 0;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+        }
+        
+        /* Channel buttons container - Increased size */
+        .channel-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px auto;
+            max-width: 1000px;
+            padding: 0 15px;
+        }
+        
+        .channel-btn {
+            width: 180px;  /* Increased from 140px */
+            height: 200px; /* Increased from 160px */
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            object-fit: cover;
+            background: linear-gradient(135deg, #222 0%, #111 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .channel-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 240px;
+            height: 200px;
+            background: linear-gradient(
+                to bottom right,
+                rgba(236, 0, 128, 0) 0%,
+                rgba(236, 0, 128, 0) 30%,
+                rgba(236, 0, 128, 0.3) 45%,
+                rgba(236, 0, 128, 0) 60%,
+                rgba(236, 0, 128, 0) 100%
+            );
+            transform: rotate(30deg);
+            transition: all 0.7s ease;
+        }
+        
+        .channel-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            border-color: #ec0080;
+            box-shadow: 0 8px 25px rgba(236, 0, 128, 0.4);
+        }
+        
+        .channel-btn:hover::before {
+            left: 100%;
+        }
+        
+        .channel-btn.active {
+            border-color: #ec0080;
+            box-shadow: 0 0 20px rgba(236, 0, 128, 0.7);
+            transform: scale(1.05);
+        }
+        
+        .channel-btn.active::after {
+            content: '▶';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: #ec0080;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        .channel-btn img {
+            width: 140px;  /* Increased from 100px */
+            height: 180px; /* Increased from 140px */
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            border-radius: 8px;
+        }
+        
+        .channel-btn:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* Custom control buttons */
+        .custom-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 0 auto;
+            max-width: 800px;
+        }
+        
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #333 0%, #222 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .control-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(236, 0, 128, 0.4),
+                transparent
+            );
+            transition: 0.5s;
+        }
+        
+        .control-btn:hover {
+            background: linear-gradient(135deg, #ec0080 0%, #c0006b 100%);
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 8px 15px rgba(236, 0, 128, 0.4);
+        }
+        
+        .control-btn:hover::before {
+            left: 100%;
+        }
+        
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .volume-slider {
+            width: 100px;
+            cursor: pointer;
+            -webkit-appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: #444;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .volume-slider:hover {
+            background: #555;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #ec0080;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .volume-slider::-webkit-slider-thumb:hover {
+            background: #ff0090;
+            transform: scale(1.2);
+        }
+        
+        /* Custom volume control positioning */
+        .custom-volume-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: rgba(0,0,0,0.7);
+            padding: 5px;
+            border-radius: 5px;
+        }
+        
+        /* Loading spinner */
+        .loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ec0080;
+            font-size: 40px;
+            z-index: 1001;
+            display: none;
+            text-shadow: 0 0 10px rgba(236, 0, 128, 0.7);
+        }
+        
+        /* Error message */
+        .error-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            background: rgba(255, 50, 50, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1001;
+            display: none;
+            text-align: center;
+            max-width: 80%;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.5);
+            border: 1px solid #ff0000;
+        }
+        
+        #retry-btn {
+            margin-top: 15px;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #ec0080 0%, #c0006b 100%);
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        #retry-btn:hover {
+            background: linear-gradient(135deg, #ff0090 0%, #d00075 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+        .content {
+            margin-top: 420px;
+            padding: 20px 15px 60px;
+        }
+        
+        @media (max-width: 767.98px) {
+            .video-container {
+                height: 250px;
+                margin-top: 0;
+                padding-top: 0;
+                padding-bottom: 0;
+                margin-bottom: 0;
+                border-bottom: 1px solid #333;
+                box-shadow: 0 4px 10px rgba(236, 0, 128, 0.2);
+                background: #111;
+                position: relative;
+                overflow: hidden;
+                border-radius: 0;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: all 0.3s ease;
+                transform-origin: top center;
+                perspective: 1000px;
+                backface-visibility: hidden;
+                will-change: transform;
+            }
+            
+            .backbtn {
+                display: none;
+            }
+            
+            .channel-buttons {
+                gap: 10px;
+                margin: 20px auto;
+            }
+            
+            /* Mobile channel button sizes */
+            .channel-btn {
+                width: 120px;  /* Increased from 100px */
+                height: 140px; /* Increased from 100px */
+                font-size: 14px;
+            }
+            
+            .channel-btn img {
+                width: 100px;  /* Adjusted for mobile */
+                height: 120px; /* Adjusted for mobile */
+            }
+            
+            .control-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            
+            .volume-slider {
+                width: 80px;
+            }
+            
+            .content {
+                margin-top: 300px;
+                padding-bottom: 40px;
+            }
+        }
+        
+        /* Fullscreen styles */
+        .video-js.vjs-fullscreen {
+            font-size: 12px;
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #ec0080;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff0090;
+        }
+    </style>
+</head>
+<body>
+    <div class="fixed-container">
+        <div class="video-container">
+            <video id="my-video" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" playsinline
+                   poster="https://via.placeholder.com/640x360?text=Zong+Mobile+TV">
+                <source src="https://media.zongmobiletv.com/converted/1535/1535.m3u8?Aura_1122=1746959013-00caaa9dba634f1aa80e1122312e21d5-0-35ab8795891f099ba5c5ac72eb07a5832f8dab76ad4d34c4b05b2a9e3ce0030a" type="application/x-mpegURL">
+                <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a web browser that
+                    <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+            </video>
+            
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            
+            <div class="error-message">
+                Error loading video. Please try again.
+                <button id="retry-btn">
+                    Retry
+                </button>
+            </div>
+            
+            <a href="https://zongmobiletv.com">
+                <img class="backbtn" src="https://zongmobiletv.com/storage/back.webp" alt="back" loading="lazy">
+            </a>
+        </div>
+
+        <!-- Custom Control Buttons -->
+        <div class="controls-container">
+            <div class="custom-controls">
+                <button class="control-btn" id="play-pause-btn"><i class="fas fa-play"></i></button>
+                <button class="control-btn" id="fullscreen-btn"><i class="fas fa-expand"></i></button>
+                <div class="volume-container">
+                    <button class="control-btn" id="mute-btn"><i class="fas fa-volume-up"></i></button>
+                    <input type="range" min="0" max="1" step="0.01" value="1" class="volume-slider" id="volume-slider">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content below fixed elements -->
+    <div class="content">
+        <!-- Channel Selection Buttons -->
+        <div class="channel-buttons">
+            <!-- Channel buttons will be generated dynamically -->
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://zongmobiletv.com/assets/js/vendor/jquery-3.5.1.min.js"></script>
+    <script src="https://zongmobiletv.com/assets/js/bootstrap.min.js"></script>
+    <script src="https://zongmobiletv.com/assets/player/video.js"></script>
+    <script src="https://zongmobiletv.com/assets/player/hls.min.js"></script>
+    <script src="https://zongmobiletv.com/assets/player/videojs5-hlsjs-source-handler.min.js"></script>
+    <script src="https://zongmobiletv.com/assets/player/vjs-quality-picker.js"></script>
+    <script src="https://zongmobiletv.com/assets/player/dist/videojs-seek-buttons.min.js"></script>
+    <script src="https://zongmobiletv.com/js/jquery.device.detector.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Channel data with more colorful logos
+            const channels = [
+                {
+                    name: "Channel 1",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1706876615324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/NotAnotherTeenMovie/master.m3u8"
+                },
+                
+            {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702893277324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Gossebumps2015/master.m3u8 "
+                },     
+                
+                
+                
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707309299324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Gossebumps2HauntedHallowen/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1710921640324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Vacancy/master.m3u8"
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1703592408324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Faster/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1710922215324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheWaterHorse/master.m3u8"
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711007631324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/LakePlacidLegacy/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708931428324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/OpenSeason/master.m3u8 "
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1706700009324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Hitch/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1703252470324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheOtherGuys/master.m3u8"
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707475940324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Slenderman/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707477358324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheTakingOfPelham123/master.m3u8"
+                },
+                
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707476491324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/StepFather/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702464479324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/AssassinationGames/master.m3u8 "
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702475061324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Awakening/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702464856324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/BladeRunner2049/master.m3u8 "
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1706008810324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/AngerManagement/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1705925283324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/30DaysofNight/master.m3u8"
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1704804450324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/AdventureOfSharkBoyandLavaGirl/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1704367184324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/SurfUp2Wavemania/master.m3u8 "
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1704279545324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheSocialNetwork/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1703763139324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Puzzle/master.m3u8 "
+                },
+                
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1703592240324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Elysium/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702893878324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheDorm/master.m3u8 "
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702894220324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheGunsofNormet/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702982395324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/IsleOfTheDead/master.m3u8"
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702549997324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/BlueLagoonTheAwakening/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1703592088324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheEdgeOfSeventeen/master.m3u8"
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1703673995324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/Test/SexTape/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1704887939324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/BootyCall/master.m3u8 "
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1706700317324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Hostel2/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707999840324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/WildThingsDiamondintheRough/master.m3u8"
+                },
+                
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1716363902324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/WildThings2/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1713423466324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheDetonator/master.m3u8"
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1713340911324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/CrouchingTiger/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1713342135324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/MakeenaGold/master.m3u8"
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1713351515324x432.jpg ",
+                    src: "https://vodnew.eu-central-1.linodeobjects.com/UrduDubbeedMovies/BatsHumanHarvest/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1713353798324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/MARYSHELLEYSFRANKENSTEINnn/master.m3u8 "
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1713354060324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheFog/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1713354622324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/HolmesAndWatson/master.m3u8 "
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711961839324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/StarShipTropper2/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711961367324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheWeddingGuest/master.m3u8 "
+                },
+                
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711959906324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/vampiretheturning/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711959334324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Mindhunter/master.m3u8 "
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711958965324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/FlightOfFury/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711958619324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/HouseofDead2DeadAim/master.m3u8 "
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711958058324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/HeebieJeebies/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711957452324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/HalfPastDead/master.m3u8 "
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711522564324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheRunDown/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711522225324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Quarantine/master.m3u8"
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711440902324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/ZathuraASpaceAdventure/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711440476324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/VerticalLimit/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711440113324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/Test/vanpoints/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711439756324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/StarShipTropper3/master.m3u8"
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711436082324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/IKnowWhatYouDidLastSummer/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711009009324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/ToxicShark/master.m3u8"
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711008601324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/SnakeHeadSwamp/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711008079324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/LakePlacidLegacy/master.m3u8 "
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711007145324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/illAlwaysKnowWhatYouDidLastSummer/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711006118324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Gladiator/master.m3u8"
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711005754324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/BrighBurn/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711004839324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Hook/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1711004163324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Pixels/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1710920429324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/PunisherTheWarZone/master.m3u8"
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1710919640324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/OnceUponAtimeInMexico/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1710919080324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Evolution/master.m3u8 "
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1710918428324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Carrie/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1710917788324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheShallows/master.m3u8 "
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1710234499324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/HellBoy2004/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708931881324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/ThePatriot/master.m3u8 "
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708932235324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/PeterPan/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708932836324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/Test/HollowMan2/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708933436324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/KungfuHustle/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708668211324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/CurseofGoldenflower/master.m3u8"
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708667957324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheOne/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708581231324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/Test/YouGotServed/master.m3u8"
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708580937324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/UrbanLegends/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708580571324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheReplacementKiller/master.m3u8"
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708579375324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheLakePlacid/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708579048324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/IStillKnowWhatYouDidLastSummer/master.m3u8 "
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708410400324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Streetfighter/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708412780324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/StandByMe/master.m3u8"
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708409984324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/SnakeintheEagleShadow/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708332638324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/InMyDreams/master.m3u8"
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708330763324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Zoom/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708330614324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/ZombieLand/master.m3u8 "
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708329241324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheWalk/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708327329324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/UnderWorldBloodWars/master.m3u8 "
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1708000076324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/XXXStateoftheUnion/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707826145324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/UltraViolet/master.m3u8 "
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707825932324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Texaschainsaw/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707824078324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/UrbanLegendBloodyMary/master.m3u8 "
+                }, 
+                
+               {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707823918324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/UrbanJustice/master.m3u8 "
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707811231324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheDevilOwn/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707811048324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/DeepEndOfTheOcean/master.m3u8"
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707810555324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Bats/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707804708324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/StarShipTropperTraitorOfMars/master.m3u8 "
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707477358324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheTakingOfPelham123/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707477152324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Takers/master.m3u8 "
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707476491324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/StepFather/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707476139324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Stealth/master.m3u8"
+                },  
+                
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707458600324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Quarantine2Terminal/master.m3u8"
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707458006324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Legion/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707307929324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/EvilDead/master.m3u8"
+                }, 
+               
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1707307731324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/DontBreathe/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1706788414324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/JohnCarpenterGhostOfMars/master.m3u8 "
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1706788190324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/HuntForEagleOneCrushPoint/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1706615806324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/HalfPastDead2/master.m3u8"
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1706528215324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Gothika/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1706095171324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/CatchandRelease/master.m3u8 "
+                }, 
+                
+               {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1706009131324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/BlackHawkDown/master.m3u8 "
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1705925481324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/2012/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1705925283324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/30DaysofNight/master.m3u8 "
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1705925047324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/13GoingOn30/master.m3u8"
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1705321716324x432.jpg",
+                    src: " https://vodnew.eu-central-1.linodeobjects.com/UrduDubbeedMovies/InTheLineofFire/master.m3u8"
+                },
+                
+               {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1705055987324x432.jpg ",
+                    src: "https://vodnew.eu-central-1.linodeobjects.com/UrduDubbeedMovies/FlyAwayHome /master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1704888058324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheBoneCollector/master.m3u8"
+                }, 
+                
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1704804295324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/AgainstAllOdds/master.m3u8 "
+                },
+                {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1704279349324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/SniperTheUltimateKill/master.m3u8"
+                }, 
+
+
+{
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1704279179324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/SniperReloaded/master.m3u8"
+                }, 
+
+                 {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1704193587324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/BabyDriver/master.m3u8 "
+                }, 
+
+{
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1704193772324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheBattleShipIsland/master.m3u8"
+                }, 
+
+{
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1703763016324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/SWATundersiege/master.m3u8"
+                }, 
+
+{
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1703673678324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Searchingg/master.m3u8"
+                }, 
+{
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1703673525324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Salt/master.m3u8"
+                }, 
+
+{
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1703243810324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/ThePrettyOne/master.m3u8 "
+                }, 
+
+{
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1703243355324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/PossesionOfHannahGrace/master.m3u8 "
+                }, 
+
+{
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1703243202324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/PatientZero/master.m3u8 "
+                }, 
+ 
+ {
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1703071535324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Life/master.m3u8 "
+                }, 
+
+{
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1703072644324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Marina5TheBattleground/master.m3u8 "
+                }, 
+
+{
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702982588324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/JustGoWithIt/master.m3u8"
+                }, 
+
+{
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702982256324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/InsidiousTheLastKey/master.m3u8"
+                }, 
+{
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702982104324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/InsidiounChapter2/master.m3u8"
+                }, 
+
+{
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702894220324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheGunsofNormet/master.m3u8"
+                }, 
+
+
+
+{
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702635890324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheDarkTower/master.m3u8"
+                }, 
+ {
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702635701324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Chappie/master.m3u8"
+                }, 
+
+{
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702635542324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/CaptainPhillips/master.m3u8"
+                }, 
+
+{
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702550478324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheBookOfEli/master.m3u8 "
+                }, 
+
+{
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702296615324x432.jpg",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/Alpha/master.m3u8 "
+                }, 
+{
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702296216324x432.jpg ",
+                    src: "https://vod-tapmad.akamaized.net/UrduDubbeedMovies/AfterEarth/master.m3u8 "
+                }, 
+
+{
+                    name: "Channel ",
+                    logo: "https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702464856324x432.jpg ",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/BladeRunner2049/master.m3u8"
+                }, 
+
+{
+                    name: "Channel ",
+                    logo: " https://d34080pnh6e62j.cloudfront.net/images/NewVideoOnDemandThumb/1702550671324x432.jpg",
+                    src: " https://vod-tapmad.akamaized.net/UrduDubbeedMovies/TheBountyHunter/master.m3u8"
+                }
+
+
+ 
+ 
+                
+                
+            ];
+
+            // Generate channel buttons
+            const channelButtonsContainer = document.querySelector('.channel-buttons');
+            channels.forEach((channel, index) => {
+                const channelBtn = document.createElement('div');
+                channelBtn.className = 'channel-btn';
+                channelBtn.dataset.src = channel.src;
+                channelBtn.dataset.index = index;
+                
+                if (channel.logo) {
+                    const img = document.createElement('img');
+                    img.src = channel.logo;
+                    img.alt = channel.name;
+                    img.style.width = '90%';
+                    img.style.height = '90%';
+                    img.style.objectFit = 'contain';
+                    img.style.borderRadius = '8px';
+                    img.style.transition = 'transform 0.3s ease';
+                    channelBtn.appendChild(img);
+                } else {
+                    channelBtn.textContent = channel.name;
+                }
+                
+                channelBtn.title = channel.name;
+                channelButtonsContainer.appendChild(channelBtn);
+            });
+
+            // Initialize the player
+            var player = videojs('my-video', {
+                controls: true,
+                preload: 'auto',
+                autoplay: true,
+                muted: true,
+                fluid: false,
+                plugins: {
+                    seekButtons: {
+                        forward: 10,
+                        back: 10
+                    }
+                }
+            }, function() {
+                this.el().tabIndex = 0; // Make player focusable
+            });
+            
+            // Register HLS source handler
+            if (videojs.HlsjsSourceHandler) {
+                videojs.getTech('Html5').registerSourceHandler(videojs.HlsjsSourceHandler);
+            }
+            
+            // Enable quality picker plugin
+            player.qualityPickerPlugin();
+            
+            // DOM elements
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+            const muteBtn = document.getElementById('mute-btn');
+            const volumeSlider = document.getElementById('volume-slider');
+            const loadingSpinner = document.querySelector('.loading-spinner');
+            const errorMessage = document.querySelector('.error-message');
+            const retryBtn = document.getElementById('retry-btn');
+            const channelButtons = document.querySelectorAll('.channel-btn');
+            
+            // Current channel index
+            let currentChannelIndex = 0;
+            
+            // Show loading spinner
+            function showLoading() {
+                loadingSpinner.style.display = 'block';
+                errorMessage.style.display = 'none';
+            }
+            
+            // Hide loading spinner
+            function hideLoading() {
+                loadingSpinner.style.display = 'none';
+            }
+            
+            // Show error message
+            function showError() {
+                errorMessage.style.display = 'block';
+                hideLoading();
+            }
+            
+            // Hide error message
+            function hideError() {
+                errorMessage.style.display = 'none';
+            }
+            
+            // Update mute button icon
+            function updateMuteButton() {
+                if (player.muted()) {
+                    muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                    volumeSlider.value = 0;
+                } else {
+                    muteBtn.innerHTML = player.volume() === 0 ? '<i class="fas fa-volume-mute"></i>' : 
+                                      (player.volume() < 0.5 ? '<i class="fas fa-volume-down"></i>' : '<i class="fas fa-volume-up"></i>');
+                    volumeSlider.value = player.volume();
+                }
+            }
+            
+            // Play/Pause button
+            playPauseBtn.addEventListener('click', function() {
+                if (player.paused()) {
+                    player.play();
+                } else {
+                    player.pause();
+                }
+            });
+            
+            // Update play/pause button state
+            player.on('play', function() {
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            });
+            
+            player.on('pause', function() {
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            });
+            
+            // Fullscreen button
+            fullscreenBtn.addEventListener('click', function() {
+                if (player.isFullscreen()) {
+                    player.exitFullscreen();
+                } else {
+                    player.requestFullscreen();
+                }
+            });
+            
+            // Update fullscreen button state
+            player.on('fullscreenchange', function() {
+                if (player.isFullscreen()) {
+                    fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+                } else {
+                    fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+                }
+            });
+            
+            // Mute button
+            muteBtn.addEventListener('click', function() {
+                player.muted(!player.muted());
+                updateMuteButton();
+            });
+            
+            // Volume slider
+            volumeSlider.addEventListener('input', function() {
+                player.volume(this.value);
+                player.muted(false);
+                updateMuteButton();
+            });
+            
+            player.on('volumechange', updateMuteButton);
+            
+            // Channel switching functionality
+            function switchChannel(index) {
+                if (index < 0 || index >= channels.length) return;
+                
+                showLoading();
+                currentChannelIndex = index;
+                
+                // Update active channel styling with animation
+                channelButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.style.transform = 'scale(1)';
+                });
+                
+                // Animate the new active channel
+                channelButtons[index].classList.add('active');
+                channelButtons[index].style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    channelButtons[index].style.transform = 'scale(1.05)';
+                }, 300);
+                
+                // Change source
+                player.src({
+                    type: 'application/x-mpegURL',
+                    src: channels[index].src
+                });
+                
+                player.ready(function() {
+                    player.play().catch(e => {
+                        console.error('Autoplay failed:', e);
+                        showError();
+                    });
+                });
+            }
+            
+            // Add click event to channel buttons
+            channelButtons.forEach((btn, index) => {
+                btn.addEventListener('click', () => {
+                    // Add click animation
+                    btn.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        btn.style.transform = 'scale(1.05)';
+                        switchChannel(index);
+                    }, 100);
+                });
+            });
+            
+            // Keyboard controls
+            document.addEventListener('keydown', function(e) {
+                // Only handle keyboard events when the player has focus
+                if (!player.hasFocus() && e.target !== document.body) return;
+                
+                // Space bar for play/pause
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    if (player.paused()) {
+                        player.play();
+                    } else {
+                        player.pause();
+                    }
+                }
+                
+                // Arrow keys for seeking (only when not in fullscreen)
+                if (!player.isFullscreen()) {
+                    if (e.code === 'ArrowRight') {
+                        e.preventDefault();
+                        player.currentTime(player.currentTime() + 10);
+                    }
+                    if (e.code === 'ArrowLeft') {
+                        e.preventDefault();
+                        player.currentTime(player.currentTime() - 10);
+                    }
+                }
+                
+                // F key for fullscreen
+                if (e.code === 'KeyF') {
+                    e.preventDefault();
+                    if (player.isFullscreen()) {
+                        player.exitFullscreen();
+                    } else {
+                        player.requestFullscreen();
+                    }
+                }
+                
+                // M key for mute
+                if (e.code === 'KeyM') {
+                    e.preventDefault();
+                    player.muted(!player.muted());
+                    updateMuteButton();
+                }
+                
+                // Up/Down arrows for volume
+                if (e.code === 'ArrowUp') {
+                    e.preventDefault();
+                    player.volume(Math.min(player.volume() + 0.1, 1));
+                    player.muted(false);
+                    volumeSlider.value = player.volume();
+                    updateMuteButton();
+                }
+                if (e.code === 'ArrowDown') {
+                    e.preventDefault();
+                    player.volume(Math.max(player.volume() - 0.1, 0));
+                    player.muted(player.volume() === 0);
+                    volumeSlider.value = player.volume();
+                    updateMuteButton();
+                }
+                
+                // Number keys for channel switching
+                if (e.code >= 'Digit1' && e.code <= 'Digit9') {
+                    const channelIndex = parseInt(e.code.replace('Digit', '')) - 1;
+                    if (channelIndex < channels.length) {
+                        e.preventDefault();
+                        switchChannel(channelIndex);
+                    }
+                }
+                
+                // Left/Right for channel switching when in fullscreen
+                if (player.isFullscreen()) {
+                    if (e.code === 'ArrowRight') {
+                        e.preventDefault();
+                        switchChannel((currentChannelIndex + 1) % channels.length);
+                    }
+                    if (e.code === 'ArrowLeft') {
+                        e.preventDefault();
+                        switchChannel((currentChannelIndex - 1 + channels.length) % channels.length);
+                    }
+                }
+            });
+            
+            // Retry button with animation
+            retryBtn.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                    hideError();
+                    switchChannel(currentChannelIndex);
+                }, 100);
+            });
+            
+            // Player events
+            player.on('error', function() {
+                showError();
+            });
+            
+            player.on('playing', function() {
+                hideLoading();
+                hideError();
+            });
+            
+            player.on('waiting', function() {
+                showLoading();
+            });
+            
+            // Initialize first channel
+            switchChannel(0);
+            
+            // Set up CSRF token for AJAX
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            
+            // Add hover effects to control buttons
+            const controlButtons = document.querySelectorAll('.control-btn');
+            controlButtons.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px) scale(1.1)';
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('active')) {
+                        this.style.transform = 'translateY(0) scale(1)';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
