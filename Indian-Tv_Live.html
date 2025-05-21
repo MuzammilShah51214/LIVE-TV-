@@ -1,0 +1,896 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIVE-TV</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+    
+        
+        .animated-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3,  #e1ac38, #bc0f5e );
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbow 5s ease infinite, bounce 2s ease infinite;
+        }
+        
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding-top: 315px; /* Increased space for fixed player and clock */
+            background-color: #f5f5f5;
+        }
+        
+        /* Digital Clock Styles */
+        .digital-clock {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 24px;
+            font-weight: bold;
+            z-index: 999; /* Ensure it's above other elements */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        
+        
+        
+        .video-container {
+            width: 100%;
+            position: fixed;
+            top: 40px; /* Adjusted to be below the clock */
+            left: 0;
+            z-index: 1000;
+            background-color: #000;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Rest of your existing styles remain the same */
+        video {
+            width: 100%;
+            display: block;
+            max-height: 70vh;
+        }
+        
+        .controls {
+            background-color: #333;
+            color: white;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px;
+            align-items: center;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background-color: #555;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #ff5722;
+            width: 0%;
+        }
+        
+        .control-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        
+        .time {
+            margin: 0 10px;
+            font-size: 14px;
+        }
+        
+        .volume-container {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+        
+        .volume-slider {
+            width: 80px;
+            margin: 0 10px;
+        }
+        
+        .fullscreen-btn {
+            margin-left: 10px;
+        }
+        
+        .thumbnail-buttons {
+            display: flex;
+            gap: 3px;
+            margin: 5px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .thumbnail-btn {
+            cursor: pointer;
+            border: 3px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        
+        .thumbnail-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .thumbnail-btn img {
+            width: 108px;
+            height: 100px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .error-message {
+            color: blue;
+            margin: 10px;
+            text-align: center;
+        }
+        
+        .content-below {
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        /* Keyboard shortcuts help */
+        .keyboard-help {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 1000;
+        }
+    
+    </style>
+    
+    
+    
+    
+    
+    
+    
+</head>
+
+<body>
+    <!-- Digital Clock -->
+    <div class="digital-clock" id="digitalClock"></div>
+    
+    <div class="video-container">
+        <video id="video" controls poster="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8b503mxoX_X7J0eRWFTNyw-YqU3Ai2XlYTSHP2UzyXw4JzmXmXQMOt1Ps&s=10"></video>
+        
+        <div class="controls">
+            <div class="progress-container">
+                <div class="progress" id="progress"></div>
+            </div>
+            
+            
+            
+            
+            
+            <button class="control-btn" id="prev-btn" title="Previous Channel (Left Arrow)">
+                <i class="fas fa-backward"></i>
+            </button>
+            
+            <button class="control-btn" id="play-pause" title="Play/Pause (Space or K)">
+                <i class="fas fa-play"></i>
+            </button>
+            
+            <button class="control-btn" id="next-btn" title="Next Channel (Right Arrow)">
+                <i class="fas fa-forward"></i>
+            </button>
+            
+            <span class="time" id="time">0:0</span>
+            
+            <div class="volume-container">
+                <button class="control-btn" id="mute" title="Mute (M)">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <input type="range" class="volume-slider" id="volume" min="0" max="1" step="0.1" value="1">
+            </div>
+            
+            <button class="control-btn fullscreen-btn" id="fullscreen" title="Fullscreen (F)">
+                <i class="fas fa-expand"></i>
+            </button>
+            
+            <button class="control-btn" id="rotate-btn" title="Rotate Screen (R)">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="thumbnail-buttons">
+    	
+    
+  
+
+
+
+
+
+  
+    
+    
+    
+        <div class="thumbnail-btn" data-src="https://live-dangal.akamaized.net/liveabr/playlist.m3u8">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/Dangal.png" alt="dangal tv">
+        </div>
+        
+        <div class="thumbnail-btn" data-src="https://live-dangal2.akamaized.net/liveabr/pub-iodanga2a26kj2/live_720p/chunks.m3u8">
+            <img src=" https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmwSGQ_-X8ql4-UYVKLPiQpCo085VUaNQqKzHiwNwVb7YpD46lYYq7bOs&s=10" alt="dangal 2">
+        </div>   
+        
+        
+        
+        <div class="thumbnail-btn" data-src="https://cdn-2.pishow.tv/live/419/master.m3u8">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/B4U_Movies.png" alt="b4u movies">
+        </div>
+        
+      <div class="thumbnail-btn" data-src="https://cdn-2.pishow.tv/live/415/master.m3u8">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/B4U_Music.png" alt="b4u music">
+        </div>
+     <div class="thumbnail-btn" data-src="https://cdn-2.pishow.tv/live/227/master.m3u8">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/B4U_Kadak.png" alt="b4u kadak">
+        </div>        
+        
+        
+        
+        
+        
+        
+        
+        
+        <div class="thumbnail-btn" data-src="https://d14c63magvk61v.cloudfront.net/strm/channels/9xm/master.m3u8">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/9XM.png" alt="9XM">
+        </div>
+        
+        <div class="thumbnail-btn" data-src="https://d14c63magvk61v.cloudfront.net/strm/channels/9xjalwa/master.m3u8">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSADZtVDjJV57GDBbJKti19EZcH3wndsIgdn3LEPYANpjQ91100_s0uG60&s=10" alt="9x jalwa">
+        </div>  
+<div class="thumbnail-btn" data-src="https://d3kdywbtdfbp9z.cloudfront.net/v1/master/93ce20f0f52760bf38be911ff4c91ed02aa2fd92/dff423e0-3c82-46d6-9ecb-3baa96b5694a/master.m3u8?aws.sessionId=0ced6b02-aeca-4527-b3b2-6c35070a40f9 ">
+            <img src="https://akamaividz2.zee5.com/image/upload/resources/0-9-132/channel_web/1170x658withlogo_790675165" alt="9X Tashan">
+        </div>  
+
+
+    
+<div class="thumbnail-btn" data-src="https://vg-pitaaratvlive.akamaized.net/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/vglive-sk-583798/playlist.m3u8">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/Pitaara.png" alt="Pitara">
+        </div>
+
+
+ 
+       <div class="thumbnail-btn" data-src="https://live-e24.dailyhunt.in/eternowsa/live/amlst:E24_,b256,b512,b1024,b1824,.smil/playlist.m3u8">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/E_24.png" alt="E24">
+        </div>        
+        
+        <div class="thumbnail-btn" data-src=" https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/zoom-tv/master.m3u8">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgT8rRrsi9j1s-cSwb6W0mK_66WDWozvo4dQ&s " alt="Zoom">
+        </div>   
+       <div class="thumbnail-btn" data-src="https://epiconvh.akamaized.net/live/showbox/master.m3u8 ">
+            <img src="https://i.ibb.co/fYp2mkMm/Picsart-25-04-18-11-24-53-151.png " alt="Show Box">
+        </div>   
+
+ 
+        <div class="thumbnail-btn" data-src="https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/mastiii/master.m3u8">
+            <img src="https://jiotvimages.cdn.jio.com/dare_images/images/Mastiii.png " alt="Mastiii">
+        </div>   
+        
+        
+        
+        <div class="thumbnail-btn" data-src="https://live-bhojpuri.akamaized.net/liveabr/pub-iobhojpuqbu6yj/live_720p/chunks.m3u8 ">
+            <img src="https://dangaplay-json.s3.ap-south-1.amazonaws.com/BhojpuriCinema_2x3.jpg" alt="Bhojpuri cinema">
+        </div>   
+        <div class="thumbnail-btn" data-src="https://vg-theqlive.akamaized.net/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/vglive-sk-306905/main.m3u8 ">
+            <img src=" https://jiotv.catchup.cdn.jio.com/dare_images/images/TheQIndia.png" alt="the q india">
+        </div>   
+        
+        
+        
+        <div class="thumbnail-btn" data-src="https://cdn-1.pishow.tv/live/1291/master.m3u8 ">
+            <img src=" https://jiotv.catchup.cdn.jio.com/dare_images/images/Dhamaal_TV.png" alt="dhamaal">
+        </div>   
+        
+        
+        
+        
+        <div class="thumbnail-btn" data-src="https://ssailive.vgcdn.net/sg/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/b6e0af97-b4c7-443e-a152-a8caa844c256/main.m3u8 ">
+            <img src="https://d229kpbsb5jevy.cloudfront.net/tv/480/270/languages/bbo.jpg " alt="BBO">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://cdn-2.pishow.tv/live/226/master.m3u8">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/Music_India.png" alt="music india">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/shemaroo-filmigaane/master.m3u8 ">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/Shemaroo_TV.png" alt="Shemaro">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src=" https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/shemaroo-bollywood/master.m3u8">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/Shemaroo_Umang.png" alt="shemaro Bollywood">
+        </div>   
+        <div class="thumbnail-btn" data-src="https://cdn-1.pishow.tv/live/1013/master.m3u8">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/Manoranjan_TV.png" alt="manoranjan tv">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://cdn-1.pishow.tv/live/1011/master.m3u8 ">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/Manoranjan_Grand.png" alt="Manoranjan Grand">
+        </div>   
+        
+        
+        <div class="thumbnail-btn" data-src="https://cdn-6.pishow.tv/live/10007/master.m3u8">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/Maha_Movies.png" alt="Maha Movies">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://livestream.unlimitedcdn.com/onlymusic/index.m3u8 ">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/Only_Music.png" alt="Only Music">
+        </div>   
+        
+        
+        
+        <div class="thumbnail-btn" data-src="https://d3kdywbtdfbp9z.cloudfront.net/v1/master/93ce20f0f52760bf38be911ff4c91ed02aa2fd92/dff423e0-3c82-46d6-9ecb-3baa96b5694a/index.m3u8?aws.sessionId=b58ac343-3c58-4cc6-955d-0f178b8c0be2">
+            <img src="https://i.pinimg.com/736x/e4/ef/64/e4ef64af8667913edddd8952000a41c8.jpg" alt="ABZY Movies">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://d3kdywbtdfbp9z.cloudfront.net/v1/master/93ce20f0f52760bf38be911ff4c91ed02aa2fd92/dff423e0-3c82-46d6-9ecb-3baa96b5694a/index.m3u8?aws.sessionId=389b3618-2ac5-4be9-b3e5-e1d132e6286b">
+            <img src="https://i.pinimg.com/736x/61/d2/16/61d2166d6c4cdb0ceea26ec46f51f7ad.jpg" alt="ABZY_DHAKAD">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://mhlive.paramountinfosystem.com/mhonedilse/098f6bcd4621d373cade4e832627b4f6.sdp/playlist.m3u8 ">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/mh1_Music.png" alt="MH1">
+        </div>   
+        
+        
+        
+        
+      
+        
+        <div class="thumbnail-btn" data-src="https://d3eyhgoylams0m.cloudfront.net/v1/master/93ce20f0f52760bf38be911ff4c91ed02aa2fd92/ed7bd2c7-8d10-4051-b397-2f6b90f99acb/index.m3u8?aws.sessionId=6f482289-847c-4b5b-bbf0-21a07a18c7d9 ">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJ5AwZokVNzOHGn-5_OJYBhCUv6lQyCaP8ilXwAJS6i5NJYQ9j29f3V3Bn&s=10 " alt="DD Bharati">
+        </div>   
+        <div class="thumbnail-btn" data-src="https://d3eyhgoylams0m.cloudfront.net/v1/master/93ce20f0f52760bf38be911ff4c91ed02aa2fd92/ed7bd2c7-8d10-4051-b397-2f6b90f99acb/index.m3u8?aws.sessionId=49cd3142-2a53-49e0-9d9b-356328b49108">
+            <img src="https://i.ibb.co/HTQQkGzS/Picsart-25-04-18-11-25-41-161.png" alt="DD National">
+        </div>  
+        
+        
+    <div class="thumbnail-btn" data-src="https://d3eyhgoylams0m.cloudfront.net/v1/manifest/93ce20f0f52760bf38be911ff4c91ed02aa2fd92/ed7bd2c7-8d10-4051-b397-2f6b90f99acb/20c8ad14-a158-4a42-8889-e032d070856e/2.m3u8">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp1OYfmugsbWOrMUv99qajPVbKpnWKLApWiDvYK1REHb7j96-zhZ2lpfc&s=10" alt="DD Punjabi">
+        </div>      
+        
+        
+        
+        
+        
+        
+
+
+
+ 
+        <div class="thumbnail-btn" data-src="https://d3eyhgoylams0m.cloudfront.net/v1/master/93ce20f0f52760bf38be911ff4c91ed02aa2fd92/ed7bd2c7-8d10-4051-b397-2f6b90f99acb/index.m3u8?aws.sessionId=0abc6b14-c563-4851-a49b-4329f9d22be4 ">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/DD_Sports.png" alt="DD Sports">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://d3eyhgoylams0m.cloudfront.net/v1/master/93ce20f0f52760bf38be911ff4c91ed02aa2fd92/ed7bd2c7-8d10-4051-b397-2f6b90f99acb/index.m3u8?aws.sessionId=f36a648c-fee1-4150-8183-947541458eac">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/DD_News.png" alt="DD News">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://mcncdndigital.com/balleballetv/index.m3u8">
+            <img src="http://balleballe.tv/wp-content/uploads/2019/07/logo-e1568618159543.png " alt="balle balle tv">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://epiconvh.akamaized.net/live/nazara/master.m3u8">
+            <img src="https://i.ibb.co/pvCX0fw5/Picsart-25-04-18-11-50-11-661.jpg" alt="Nazara tv">
+        </div>   
+      
+    <div class="thumbnail-btn" data-src="https://epiconvh.akamaized.net/live/filamchi/master_864.m3u8">
+            <img src="https://www.adgully.com/img/800/202105/filamachienglish-black.jpg " alt="filmachi">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://cdn-2.pishow.tv/live/1459/master.m3u8 ">
+            <img src="https://i.pinimg.com/736x/1c/9a/08/1c9a085c1fe6a240cfa29004c0a36b05.jpg" alt="Goldmines">
+        </div>   
+    <div class="thumbnail-btn" data-src="https://cdn-2.pishow.tv/live/1460/master.m3u8">
+            <img src="https://i.pinimg.com/736x/a3/e6/61/a3e661d1dfac520cfed7e1dd44bb8581.jpg" alt="Goldmines Bollywood">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://cdn-2.pishow.tv/live/1461/master.m3u8">
+            <img src="https://i.pinimg.com/736x/09/62/d9/0962d9a7c965d5ecb70f1a6f5c8f93dd.jpg" alt="Goldmines Movies">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://anjantvevent.pc.cdn.bitgravity.com/anjantv/live/amlst:event_anjan_,b400,b800,b1024,b1200,b1500,b4000,.smil/chunklist_b4000000.m3u8">
+            <img src="https://i.pinimg.com/736x/76/bd/a0/76bda01f96b00c711bc9023f38aa1c0a.jpg" alt="anjan tv">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/arre/master.m3u8">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/Arre.png" alt="Arre tv">
+        </div>   
+
+    <div class="thumbnail-btn" data-src="https://livecdn.live247stream.com/joomusic/tv/playlist.m3u8 ">
+            <img src="https://www.joomusic.net/assets/images/logo.png" alt="Joo music">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://d35j504z0x2vu2.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/saga-music/c2c3ab4a-9ade-4fd1-82e0-15a5faee650c/0.m3u8">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/Saga_Music.png" alt="Saga Music HD">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/yrf-music/master.m3u8 ">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/YRF_Music.png" alt="yrf-music">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src=" https://cc-jytb1qhmgqh5a.akamaized.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-jytb1qhmgqh5a/playlist.m3u8">
+            <img src=" https://tvpdotcomdynamiclogopus.samsungcloud.tv/resize?url=https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/IN38000072R_20241211T020400SQUARE.png&h=250" alt="the movie club">
+        </div>   
+        <div class="thumbnail-btn" data-src="https://spt-sonykal-1-us.lg.wurl.tv/playlist.m3u8">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGQFzinyvkKDjHmPTP2GkjGKS3tXjgVrML4w&s" alt="Sony kal">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://legitpro.co.in/punjabihits/punjabihits/index.m3u8">
+            <img src="https://i.pinimg.com/736x/54/56/d3/5456d33d8825a0a3d0aead74114a1af8.jpg" alt="punjabi hits">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://cdn2.in/SteelbirdMusicTVhls/live.m3u8">
+            <img src=" https://i.ibb.co/27vcPGBY/Picsart-25-04-18-11-30-28-867.png" alt="Steelbird Music">
+        </div>   
+        
+        
+        
+        
+        
+        
+        
+    <div class="thumbnail-btn" data-src="https://dknttpxmr0dwf.cloudfront.net/index_6.m3u8">
+            <img src="https://d388d59m61mm0v.cloudfront.net/optimized/content/common/logos/channel/logos/tefpyz.png" alt="Zee News">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://d2o3r1shda7xvv.cloudfront.net/index_5.m3u8 ">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/Zee_Salaam.png" alt="Zee Salaam">
+        </div>   
+
+    <div class="thumbnail-btn" data-src=" https://d31s6sxcz6vnac.cloudfront.net/index_3.m3u8">
+            <img src="https://i.pinimg.com/736x/b7/10/24/b7102420be9a0f9702d310bfc95e80bf.jpg" alt="zee punjab haryana">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://abplivetv.pc.cdn.bitgravity.com/httppush/abp_livetv/abp_abpnews/master.m3u8">
+            <img src="https://i.pinimg.com/736x/62/be/31/62be317f79ba2aacaad9499ae57c4e22.jpg" alt="Abp news">
+        </div>   
+    <div class="thumbnail-btn" data-src="https://aajtaklive-amd.akamaized.net/hls/live/2014416/aajtak/aajtaklive/live_720p/chunks.m3u8">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/Aaj_Tak.png" alt="Aajtakk">
+        </div>   
+        
+        <div class="thumbnail-btn" data-src="https://feeds.intoday.in/aajtak/api/at2/master.m3u8">
+            <img src="https://akm-img-a-in.tosshub.com/aajtak/resources/at2logo_97x552x.png " alt="aajtakk 2">
+        </div> 
+
+
+
+  
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </div>
+
+<center>
+<div class="animated-name">❤️Syed Muzammil Shah❤️</div></center>
+    
+    <center>
+    	<a href="https://rawcdn.githack.com/MuzammilShah51214/LIVE-TV-/9ad3d1f3b741ad73dca66e86dc29271e138c0a42/Indian-Channels-Page-02.html">
+    <img src="https://i.ibb.co/kVfgmSwB/Next-page.png"height="40"width="70" alt="Description"></a>
+</center>
+
+
+
+
+<body style="background-color:#000000;">
+
+
+
+
+
+
+
+    <div id="error-message" class="error-message"></div>
+
+    <div class="content-below">
+        <!-- Your other page content would go here -->
+    </div>
+    
+    <div class="keyboard-help" id="keyboardHelp">
+        
+        
+        <div><strong>Keyboard Shortcuts:</strong></div>
+        
+        <div>Space/K: Play/Pause</div>
+        <div>F: Fullscreen</div>
+        <div>M: Mute</div>
+        <div>←/→: Previous/Next Channel</div>
+      <div>R: Rotate Screen</div>
+    </div>  
+
+    <script>
+    	
+    // Digital Clock Functionality - 12-hour format
+    function updateClock() {
+        const now = new Date();
+        let hours = now.getHours();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        const timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
+        document.getElementById('digitalClock').textContent = timeString;
+    }
+    
+    // Update the clock immediately and then every second
+    updateClock();
+    setInterval(updateClock, 1000);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+   
+</script>     
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <script>
+        
+        
+        
+        updateClock(); // Initial call
+        
+        // Video player functionality
+        
+        const video = document.getElementById('video');
+        const progress = document.getElementById('progress');
+        
+        
+        
+        
+        const playPauseBtn = document.getElementById('play-pause');
+        const timeDisplay = document.getElementById('time');
+        const muteBtn = document.getElementById('mute');
+        const volumeSlider = document.getElementById('volume');
+        const fullscreenBtn = document.getElementById('fullscreen');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const rotateBtn = document.getElementById('rotate-btn');
+        const progressContainer = document.querySelector('.progress-container');
+        const thumbnailButtons = document.querySelectorAll('.thumbnail-btn');
+        const errorMessage = document.getElementById('error-message');
+        const keyboardHelp = document.getElementById('keyboardHelp');
+        
+        let hls = new Hls();
+        let currentChannelIndex = 0;
+        const channels = Array.from(thumbnailButtons).map(btn => btn.getAttribute('data-src')).filter(src => src.trim());
+        
+        // Initialize with first stream
+        if (channels.length > 0) {
+            loadVideo(channels[currentChannelIndex]);
+        }
+        
+        // Thumbnail button click handler
+        thumbnailButtons.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                const src = button.getAttribute('data-src');
+                if (src.trim()) {
+                    currentChannelIndex = index;
+                    loadVideo(src);
+                }
+            });
+        });
+        
+        function loadVideo(src) {
+            // Destroy previous HLS instance if it exists
+            if (hls) {
+                hls.destroy();
+            }
+            
+            errorMessage.textContent = '';
+            
+            if (Hls.isSupported()) {
+                hls = new Hls();
+                hls.loadSource(src);
+                hls.attachMedia(video);
+                
+                hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                    video.play().catch(e => {
+                        errorMessage.textContent = 'Autoplay was prevented. Please click play manually.';
+                    });
+                });
+                
+                hls.on(Hls.Events.ERROR, (event, data) => {
+                    if (data.fatal) {
+                        switch(data.type) {
+                            case Hls.ErrorTypes.NETWORK_ERROR:
+                                errorMessage.textContent = 'Network error - trying to recover';
+                                hls.startLoad();
+                                break;
+                            case Hls.ErrorTypes.MEDIA_ERROR:
+                                errorMessage.textContent = 'Media error - trying to recover';
+                                hls.recoverMediaError();
+                                break;
+                            default:
+                                errorMessage.textContent = 'Fatal error - cannot recover';
+                                break;
+                        }
+                    }
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                // For Safari
+                video.src = src;
+                video.addEventListener('loadedmetadata', () => {
+                    video.play().catch(e => {
+                        errorMessage.textContent = 'Autoplay was prevented. Please click play manually.';
+                    });
+                });
+            } else {
+                errorMessage.textContent = 'HLS is not supported in this browser';
+            }
+        }
+        
+        // Play/Pause
+        function togglePlayPause() {
+            if (video.paused) {
+                video.play().catch(e => {
+                    errorMessage.textContent = 'Playback failed: ' + e.message;
+                });
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                video.pause();
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        }
+        
+        playPauseBtn.addEventListener('click', togglePlayPause);
+        
+        // Previous channel
+        function prevChannel() {
+            if (channels.length === 0) return;
+            
+            currentChannelIndex--;
+            if (currentChannelIndex < 0) {
+                currentChannelIndex = channels.length - 1;
+            }
+            loadVideo(channels[currentChannelIndex]);
+        }
+        
+        prevBtn.addEventListener('click', prevChannel);
+        
+        // Next channel
+        function nextChannel() {
+            if (channels.length === 0) return;
+            
+            currentChannelIndex++;
+            if (currentChannelIndex >= channels.length) {
+                currentChannelIndex = 0;
+            }
+            loadVideo(channels[currentChannelIndex]);
+        }
+        
+        nextBtn.addEventListener('click', nextChannel);
+        
+        // Rotate screen (toggle portrait/landscape)
+        function rotateScreen() {
+            if (screen.orientation) {
+                if (screen.orientation.type.includes('portrait')) {
+                    screen.orientation.lock('landscape').catch(e => {
+                        errorMessage.textContent = 'Rotation failed: ' + e.message;
+                    });
+                } else {
+                    screen.orientation.lock('portrait').catch(e => {
+                        errorMessage.textContent = 'Rotation failed: ' + e.message;
+                    });
+                }
+            } else {
+                errorMessage.textContent = 'Screen orientation API not supported';
+            }
+        }
+        
+        rotateBtn.addEventListener('click', rotateScreen);
+        
+        // Update progress bar
+        video.addEventListener('timeupdate', () => {
+            if (video.duration) {
+                const progressPercent = (video.currentTime / video.duration) * 100;
+                progress.style.width = `${progressPercent}%`;
+                
+                // Update time display
+                const currentMinutes = Math.floor(video.currentTime / 60);
+                const currentSeconds = Math.floor(video.currentTime % 60).toString().padStart(2, '0');
+                const durationMinutes = Math.floor(video.duration / 60);
+                const durationSeconds = Math.floor(video.duration % 60).toString().padStart(2, '0');
+                
+                timeDisplay.textContent = `${currentMinutes}:${currentSeconds} / ${durationMinutes}:${durationSeconds}`;
+            }
+        });
+        
+        // Click on progress bar to seek
+        progressContainer.addEventListener('click', (e) => {
+            if (video.duration) {
+                const pos = (e.pageX - progressContainer.getBoundingClientRect().left) / progressContainer.offsetWidth;
+                video.currentTime = pos * video.duration;
+            }
+        });
+        
+        // Volume controls
+        volumeSlider.addEventListener('input', () => {
+            video.volume = volumeSlider.value;
+            muteBtn.innerHTML = video.volume === 0 ? 
+                '<i class="fas fa-volume-mute"></i>' : 
+                '<i class="fas fa-volume-up"></i>';
+        });
+        
+        function toggleMute() {
+            video.muted = !video.muted;
+            if (video.muted) {
+                muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                volumeSlider.value = 0;
+            } else {
+                muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                volumeSlider.value = video.volume;
+            }
+        }
+        
+        muteBtn.addEventListener('click', toggleMute);
+        
+        // Fullscreen
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                video.requestFullscreen().catch(err => {
+                    errorMessage.textContent = `Fullscreen error: ${err.message}`;
+                });
+                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                document.exitFullscreen();
+                fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+            }
+        }
+        
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+        
+        // Change play/pause icon when video ends
+        video.addEventListener('ended', () => {
+            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+        });
+        
+        // Handle video errors
+        video.addEventListener('error', () => {
+            errorMessage.textContent = 'Video playback error occurred';
+        });
+        
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            // Don't trigger if focused on input elements
+            if (e.target.tagName === 'INPUT') return;
+            
+            switch(e.key) {
+                case ' ':
+                case 'k':
+                case 'K':
+                    togglePlayPause();
+                    e.preventDefault();
+                    break;
+                case 'm':
+                case 'M':
+                    toggleMute();
+                    e.preventDefault();
+                    break;
+                case 'f':
+                case 'F':
+                    toggleFullscreen();
+                    e.preventDefault();
+                    break;
+                case 'ArrowLeft':
+                    prevChannel();
+                    e.preventDefault();
+                    break;
+                case 'ArrowRight':
+                    nextChannel();
+                    e.preventDefault();
+                    break;
+                case 'r':
+                case 'R':
+                    rotateScreen();
+                    e.preventDefault();
+                    break;
+                case 'h':
+                case 'H':
+                    
+                keyboardHelp.style.display = keyboardHelp.style.display === 'none' ? 'block' : 'none';
+                    e.preventDefault();
+                    break;             
+            }
+        });
+        
+        // Show/hide keyboard help on hover
+        keyboardHelp.addEventListener('mouseenter', () => {
+            keyboardHelp.style.display = 'block';
+        });
+        
+        keyboardHelp.addEventListener('mouseleave', () => {
+            keyboardHelp.style.display = 'none';
+        });
+        
+        // Hide keyboard help initially
+        keyboardHelp.style.display = 'none';
+    </script>
+</body>
+</html>
