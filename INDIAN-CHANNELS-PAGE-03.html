@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* Loader Styles */
+    .loader-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color:#000000; /* Matching your background with opacity */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      flex-direction: column;
+    }
+    
+    .loader {
+      width: 80px;
+      height: 80px;
+      position: relative;
+    }
+    
+    .loader-circle {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 8px solid transparent;
+      border-top-color: #2ecc71;
+      border-radius: 50%;
+      animation: spin 1.5s linear infinite;
+    }
+    
+    .loader-circle:nth-child(2) {
+      border-top-color: #e74c3c;
+      animation-delay: 0.3s;
+    }
+    
+    .loader-circle:nth-child(3) {
+      border-top-color: #3498db;
+      animation-delay: 0.6s;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .loader-text {
+      color: white;
+      font-family: Arial, sans-serif;
+      margin-top: 20px;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+    
+    /* Hide loader when content is loaded */
+    .content {
+      display: none;
+    }
+    
+    /* Your existing styles */
+    .button-container {
+      display: flex;
+      gap: 10px;
+      padding: 05px;
+      
+      border-radius: 5px;
+      justify-content: center;
+    }
+
+    .image-button {
+      width: 70px;
+      height: 100px;
+      border: 5px solid #ddd;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+    }
+
+    .image-button:hover {
+      transform: translateY(-5px);
+      border-color: #2ecc71;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+
+    /* Optional: Different hover effects for each button */
+    a:nth-child(1) .image-button:hover {
+      border-color: #e74c3c;
+    }
+    a:nth-child(2) .image-button:hover {
+      border-color: #3498db;
+    }
+    a:nth-child(3) .image-button:hover {
+      border-color: #f1c40f;
+    }
+    a:nth-child(4) .image-button:hover {
+      border-color: #9b59b6;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 0.2rem;
+      font-size: 1em;
+      color: #666;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    body {
+      background-color: #000000;
+    }
+  </style>
+  </head>
+<body>
+  <!-- Loader -->
+  <div class="loader-container" id="loader">
+    <div class="loader">
+      <div class="loader-circle"></div>
+      <div class="loader-circle"></div>
+      <div class="loader-circle"></div>
+    </div>
+    <div class="loader-text">Loading Channels</div>
+  </div>
+  
+  <!-- Your Content (hidden initially) -->
+  <div class="content" id="content">
+    <div class="button-container">
+    	<a href="https://cdn.stmify.com/embed-free.php?id=AndTV" target="_blank">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyQYLruAilOq2iPSvkyxHfRZNPGFDyGcN69MfEUca5dhnJFSaWXHQcKIY&s=10" alt="and tv" class="image-button">
+      </a>
+      <a href="https://cdn.stmify.com/embed-free.php?id=And_Pictures" target="_blank">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLBR4je-yGG1Iu9BwyCgH00gaLvfgDO30ek5TvPcx9_jpDpHUad9Fj2Bc4&s=10" alt="Button 1" class="image-button">
+      </a>
+      <a href="https://cdn.stmify.com/embed-free.php?id=ZeeTV" target="_blank">
+        <img src="https://stmify.com/wp-content/uploads/2024/09/52-s-768x432.webp" alt="Button 3" class="image-button">
+      </a>
+      <a href="https://cdn.stmify.com/embed-free.php?id=Zee_Anmol" target="_blank">
+        <img src="https://stmify.com/wp-content/uploads/2024/08/62-s-768x432.webp" alt="Button 4" class="image-button">
+      </a>
+    </div>
+    <div class="button-container">
+ <a href="https://cdn.stmify.com/embed-free.php?id=Zing" target="_blank">
+    <img src="https://stmify.com/wp-content/uploads/2024/08/57-s-768x432.webp" alt="Button 3" class="image-button">
+  </a>
+  
+  
+  
+  <a href="https://cdn.stmify.com/embed-free.php?id=Zee_Anmol_Cinema" target="_blank">
+    <img src="https://stmify.com/wp-content/uploads/2024/08/66-s-768x432.webp" alt="Button 4" class="image-button">
+ </a>
+ 
+  <a href="https://cdn.stmify.com/embed-free.php?id=Zee_Action" target="_blank">
+    <img src="https://stmify.com/wp-content/uploads/2024/08/74-s-768x432.webp" alt="Button 3" class="image-button">
+  </a>
+  
+ <a href="https://cdn.stmify.com/embed-free.php?id=Zee_Bollywood" target="_blank">
+    <img src="https://stmify.com/wp-content/uploads/2024/08/89-s.webp" alt="Button 3" class="image-button"></a>
+ </div>
+ 
+ 
+ 
+ 
+ <div class="button-container">
+   <a href="https://cdn.stmify.com/embed-free.php?id=Zoom" target="_blank">
+    <img src="https://stmify.com/wp-content/uploads/2025/01/477-s-768x432.webp" alt="Button 4" class="image-button">
+ </a> 
+    
+    
+    
+    
+ 
+  <a href="//cdn.stmify.com/embed-free.php?id=B4U_Movies" target="_blank">
+    <img src="https://stmify.com/wp-content/uploads/2025/03/544-s.webp" alt="Button 4" class="image-button">
+ </a>
+ 
+ 
+ <a href="https://cdn.stmify.com/embed-free.php?id=And_Flix" target="_blank">
+    <img src="https://stmify.com/wp-content/uploads/2024/09/112-s.webp" alt="Button 3" class="image-button">
+  </a>
+  
+  
+  
+  
+  <a href="//cdn.stmify.com/embed-free.php?id=Shorts_TV_Active" target="_blank">
+    <img src="https://stmify.com/wp-content/uploads/2025/01/479-s.webp" alt="Button 4" class="image-button">
+ </a>
+ </div>
+
+<div class="button-container">
+ <a href="https://cdn.stmify.com/embed-free.php?id=Korean_Dramas" target="_blank">
+    <img src="https://stmify.com/wp-content/uploads/2025/01/478-s.webp" alt="Button 3" class="image-button">
+  </a>
+  
+  <a href="//cdn.stmify.com/embed-free.php?id=9XM" target="_blank">
+    <img src="https://stmify.com/wp-content/uploads/2025/01/7-s-768x432.webp" alt="Button 4" class="image-button">
+ </a>
+ 
+
+
+	
+	<a href="//cdn.stmify.com/embed-free.php?id=9X_Jalwa" target="_blank">
+    <img src="https://stmify.com/wp-content/uploads/2024/09/149-s-768x432.webp" alt="Button 3" class="image-button">
+  </a>
+	
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ <a href="//cdn.stmify.com/embed-free.php?id=Discovery_Science_Hindi" target="_blank">
+    <img src="https://stmify.com/wp-content/uploads/2024/08/91-s.webp" alt="Button 3" class="image-button">
+  </a>
+  </div>
+  
+  <div class="button-container">
+  <a href="//cdn.stmify.com/embed-free.php?id=Kids_Zone_Plus" target="_blank">
+    <img src="https://stmify.com/wp-content/uploads/2025/03/537-s.webp" alt="Button 4" class="image-button">
+ </a>     </div>
+    
+    <hr>
+    
+    
+    
+    <center>
+    	<a href="https://rawcdn.githack.com/MuzammilShah51214/Live-Tv-786/7923d88ce0148687c12005205e5585ecca084eab/Indian-TV-Live-Channels.html">
+    <img src="https://i.ibb.co/hJPpxg98/Picsart-25-04-16-19-40-30-707.png"height="50"width="100" alt="Description"></a>
+</center>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <!-- Rest of your content... -->
+    
+    <footer>
+    	<hr>
+      <p>&copy; 2025 IndianTV/Syed Muzammil-Shah. All rights reserved.</p><hr>
+    </footer>
+  </div>
+  
+  <script>
+    // Simulate loading time (you can remove this in production)
+    setTimeout(function() {
+      document.getElementById('loader').style.display = 'none';
+      document.getElementById('content').style.display = 'block';
+    }, 3000); // 3 seconds delay for demo
+  </script>
+</body>
+</html>
+
