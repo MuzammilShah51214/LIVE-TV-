@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JW Player HLS Stream</title>
+    <!-- JW Player Library -->
+    <script src="https://ssl.p.jwpcdn.com/player/v/8.26.0/jwplayer.js"></script>
+    <script>jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';</script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            color: white;
+        }
+        
+        
+        
+        
+        }
+    </style>
+</head>
+<body>
+    
+    
+    
+
+
+
+
+<div id="player-container"></div>
+    <script>
+        // Setup the player with initial HLS stream
+        jwplayer("player-container").setup({
+            playlist: [{
+                file: "http://125.209.88.166:45793/BRN/GeoSuper.stream/playlist.m3u8",
+                title: "Live Stream",
+                description: "HLS Live Stream Playback"
+            }],
+            width: "100%",
+            aspectratio: "16:9",
+            autostart: false,
+            mute: false,
+            primary: "html5",
+            hlshtml: true,
+            stretching: "uniform"
+        });
+        
+        
+    </script>
+</body>
+</html>
