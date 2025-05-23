@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Video Player</title>
+    <style>
+        body {
+            background: black;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #vplayer {
+            height: 100vh !important;
+            width: 100% !important;
+        }
+    </style>
+    <script src='https://ssl.p.jwpcdn.com/player/v/8.26.9/jwplayer.js'></script>
+    <script>jwplayer.key="Y8nORY7CUY5RnlN/f8onh+AXI1ZWodkujMJAXBwpcAnDG5N4";</script>
+</head>
+<body>
+    <div id='vplayer'></div>
+
+    <script>
+        var player = jwplayer("vplayer");
+        player.setup({
+            sources: [{
+                file: "http://175.107.244.52:4457/play/a08g/index.m3u8"
+            }],
+            width: "100%",
+            height: "100%",
+            autostart: true,
+            stretching: "uniform",
+            hlshtml: true,
+            primary: "html5",
+            playbackRateControls: true,
+            playbackRates: [0.25, 0.5, 1, 1.5, 2.0],
+            skin: {
+                name: "alaska"
+            },
+            tracks: [{
+                file: "/dl?op=get_slides&length=9496&url=https://img.vmrest.space/bx/box-1097-y/i/01/00484/m1j6knqhjctw_p.jpg",
+                kind: "thumbnails"
+            },{
+                file: "175.107.244.52:4457/play/a08g/index.m3u8",
+                label: "English",
+                kind: "captions",
+                "default": true
+            }],
+            captions: {
+                color: '#FFFFFF',
+                fontSize: 16,
+                fontFamily: "Verdana",
+                backgroundOpacity: 0,
+                edgeStyle: 'raised',
+                fontOpacity: 90
+            }
+        });
+
+        player.on('error', function(evt) {
+            console.error('Player error:', evt.message);
+        });
+    </script>
+</body>
+</html>
