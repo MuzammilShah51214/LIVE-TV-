@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Modern ExoPlayer with Fullscreen Rotation</title>
+    <!-- ExoPlayer from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/exoplayer@2.18.7/dist/exoplayer.min.js"></script>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff5722;
+            --secondary-color: #ff7043;
+            --dark-color: #212121;
+            --light-color: #f5f5f5;
+            --overlay-color: rgba(0, 0, 0, 0.7);
+            --control-bg: rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #000;
+            color: white;
+            padding-top: 56.25vw; /* Maintain aspect ratio for fixed player */
+        }
+
+        .player-container {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            background-color: #000;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background-color: #000;
+        }
+
+        #video-player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+        }
+
+        /* Poster image styles */
+        .video-poster {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 5;
+            display: block;
+        }
+
+        .video-poster.hidden {
+            display: none;
+        }
+
+        .player-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .video-container:hover .player-overlay,
+        .player-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+            background: linear-gradient(to top, var(--overlay-color), transparent 30%);
+        }
+
+        .controls-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 15px;
+        }
+
+        .top-controls {
+            display: flex;
+            align-items: center;
+            margin-bottom: auto;
+        }
+
+        .video-title {
+            margin-left: 15px;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .center-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: auto;
+        }
+
+        .bottom-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .time-display {
+            display: flex;
+            gap: 5px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .progress-bar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .secondary-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .control-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            background: var(--control-bg);
+            transform: scale(1.1);
+        }
+
+        .control-btn.large {
+            font-size: 2.5rem;
+        }
+
+        .control-btn i {
+            font-size: 1.5rem;
+        }
+
+        .loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 100;
+        }
+
+        /* Modern loader styles */
+        .loader {
+            width: 64px;
+            height: 64px;
+            position: relative;
+        }
+
+        .loader::before,
+        .loader::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            animation: loaderAnimation 2s ease-in-out infinite;
+            opacity: 0.7;
+        }
+
+        .loader::after {
+            animation-delay: 1s;
+        }
+
+        @keyframes loaderAnimation {
+            0%, 100% {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1);
+                opacity: 0.1;
+            }
+        }
+
+        .settings-panel {
+            position: absolute;
+            bottom: 80px;
+            right: 20px;
+            background: var(--overlay-color);
+            border-radius: 8px;
+            padding: 15px;
+            width: 250px;
+            transform: translateY(20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        .settings-panel.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .settings-header h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .setting-option {
+            margin-bottom: 15px;
+        }
+
+        .setting-option label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .settings-select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .settings-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        /* Channel buttons styles */
+        .channel-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 5px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .channel-btn {
+            position: relative;
+            width: 105px;
+            height: 130px;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #333;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            padding: 0;
+        }
+        
+        .channel-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.3);
+        }
+        
+        .channel-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .channel-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 5px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Buffering indicator */
+        .buffering-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 99;
+        }
+
+        .buffering-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .buffering-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            animation: bufferingAnimation 1.4s infinite ease-in-out;
+        }
+
+        .buffering-dot:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .buffering-dot:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bufferingAnimation {
+            0%, 80%, 100% { 
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        /* Landscape orientation styles */
+        @media screen and (orientation: landscape) {
+            body {
+                padding-top: 0 !important;
+            }
+            
+            .player-container {
+                height: 100vh !important;
+                padding-top: 0 !important;
+            }
+            
+            .video-container {
+                height: 100% !important;
+                padding-top: 0 !important;
+            }
+        }
+
+        /* Fullscreen landscape optimization */
+        :fullscreen .player-container {
+            width: 100% !important;
+            height: 100% !important;
+            padding-top: 0 !important;
+        }
+
+        :fullscreen .video-container {
+            height: 100% !important;
+            padding-top: 0 !important;
+        }
+
+        :-webkit-full-screen .player-container {
+            width: 100% !important;
+            height: 100% !important;
+            padding-top: 0 !important;
+        }
+
+        :-moz-full-screen .player-container {
+            width: 100% !important;
+            height: 100% !important;
+            padding-top: 0 !important;
+        }
+
+        :-ms-fullscreen .player-container {
+            width: 100% !important;
+            height: 100% !important;
+            padding-top: 0 !important;
+        }
+
+        /* Fullscreen active class */
+        body.fullscreen-active {
+            overflow: hidden;
+        }
+
+        body.fullscreen-active .player-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .control-btn.large {
+                font-size: 2rem;
+            }
+        
+            .control-btn i {
+                font-size: 1.2rem;
+            }
+        
+            .settings-panel {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="player-container">
+        <div class="video-container">
+            <video id="video-player" class="video-js" playsinline></video>
+            <!-- Poster image -->
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9b4UymmPuB0jt3S339SZZ0RM0etXCq3qI3nhI_UPRhICy-JwKpM7Apqta&s=10" class="video-poster" id="video-poster" alt="Video poster">
+            
+            <div class="player-overlay">
+                <div class="controls-container">
+                    <div class="top-controls">
+                        <button id="back-btn" class="control-btn">
+                            <i class="material-icons">arrow_back</i>
+                        </button>
+                        <div class="video-title">Streaming Video</div>
+                    </div>
+                    
+                    <div class="center-controls">
+                        <button id="rewind-btn" class="control-btn large">
+                            <i class="material-icons">replay_10</i>
+                        </button>
+                        <button id="play-pause-btn" class="control-btn large">
+                            <i class="material-icons">play_arrow</i>
+                        </button>
+                        <button id="forward-btn" class="control-btn large">
+                            <i class="material-icons">forward_10</i>
+                        </button>
+                    </div>
+                    
+                    <div class="bottom-controls">
+                        <div class="time-display">
+                            <span id="current-time">0:00</span> / <span id="duration">0:00</span>
+                        </div>
+                        <input type="range" id="progress-bar" class="progress-bar" min="0" max="100" value="0">
+                        <div class="secondary-controls">
+                            <button id="settings-btn" class="control-btn">
+                                <i class="material-icons">settings</i>
+                            </button>
+                            <button id="fullscreen-btn" class="control-btn">
+                                <i class="material-icons">fullscreen</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="loading-spinner">
+                <div class="loader"></div>
+            </div>
+            
+            <div class="buffering-indicator">
+                <div class="buffering-dots">
+                    <div class="buffering-dot"></div>
+                    <div class="buffering-dot"></div>
+                    <div class="buffering-dot"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-panel" id="settings-panel">
+            <div class="settings-header">
+                <h3>Player Settings</h3>
+                <button id="close-settings" class="control-btn">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            <div class="settings-content">
+                <div class="setting-option">
+                    <label for="quality-select">Quality</label>
+                    <select id="quality-select" class="settings-select">
+                        <option value="auto">Auto</option>
+                        <option value="hd">HD</option>
+                        <option value="sd">SD</option>
+                    </select>
+                </div>
+                <div class="setting-option">
+                    <label for="speed-select">Playback Speed</label>
+                    <select id="speed-select" class="settings-select">
+                        <option value="0.5">0.5x</option>
+                        <option value="0.75">0.75x</option>
+                        <option value="1" selected>1x</option>
+                        <option value="1.25">1.25x</option>
+                        <option value="1.5">1.5x</option>
+                        <option value="2">2x</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Channel selection buttons -->
+    <div class="channel-buttons">
+        <button class="channel-btn" data-src="https://www.filmyzilla11.com/downloads/26889/1/server_1/" data-title="Sanam Teri Kasam" data-poster="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_qZiuK7Ba8ADCHRz76LHZi7mOPphL1Wb_-g&usqp=CAU">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_qZiuK7Ba8ADCHRz76LHZi7mOPphL1Wb_-g&usqp=CAU" alt="Channel 1">
+            <div class="channel-label">Sanam Teri Kasam</div>
+        </button>
+        <button class="channel-btn" data-src="https://www.filmyzilla11.com/downloads/27783/1/server_1/" data-title="Bhool Bhulaiyaa 3" data-poster="https://www.filmyzilla11.com/files/images/Bhool-bhulaiyaa-3-(2024)-hindi-movie.jpg">
+            <img src="https://www.filmyzilla11.com/files/images/Bhool-bhulaiyaa-3-(2024)-hindi-movie.jpg" alt="Channel 2">
+            <div class="channel-label">Bhool Bhulaiyaa 3</div>
+        </button>
+        <button class="channel-btn" data-src="https://www.9xlinks.xyz/genxfm1784799476?download=main" data-title="The Bhootnii" data-poster="https://www.9xflix.me/files/images/28478.webp">
+            <img src="https://www.9xflix.me/files/images/28478.webp" alt="Channel 3">
+            <div class="channel-label">The Bhootnii</div>
+        </button>
+        <button class="channel-btn" data-src="https://www.9xlinks.xyz/genxfm1784799454?download=main" data-title="JAAT" data-poster="https://www.9xflix.me/files/images/28407.webp">
+            <img src="https://www.9xflix.me/files/images/28407.webp" alt="JAAT">
+            <div class="channel-label">Jaat</div>
+        </button>
+        <button class="channel-btn" data-src="https://example.com/stream5.m3u8" data-title="Channel 5" data-poster="https://via.placeholder.com/800x450?text=Channel+5">
+            <img src="https://via.placeholder.com/100x130?text=CH5" alt="Channel 5">
+            <div class="channel-label">Channel 5</div>
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Player elements
+            const videoElement = document.getElementById('video-player');
+            const videoPoster = document.getElementById('video-poster');
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const rewindBtn = document.getElementById('rewind-btn');
+            const forwardBtn = document.getElementById('forward-btn');
+            const progressBar = document.getElementById('progress-bar');
+            const currentTimeDisplay = document.getElementById('current-time');
+            const durationDisplay = document.getElementById('duration');
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+            const settingsBtn = document.getElementById('settings-btn');
+            const settingsPanel = document.getElementById('settings-panel');
+            const closeSettings = document.getElementById('close-settings');
+            const qualitySelect = document.getElementById('quality-select');
+            const speedSelect = document.getElementById('speed-select');
+            const loadingSpinner = document.querySelector('.loading-spinner');
+            const bufferingIndicator = document.querySelector('.buffering-indicator');
+            const playerOverlay = document.querySelector('.player-overlay');
+            const videoTitle = document.querySelector('.video-title');
+            const channelButtons = document.querySelectorAll('.channel-btn');
+            
+            // Initialize ExoPlayer
+            let player;
+            let isPlaying = false;
+            let isSeeking = false;
+            let hideControlsTimeout;
+            
+            // Current video URL
+            let currentVideoUrl = '';
+            
+            // Screen orientation lock/unlock
+            function lockOrientation() {
+                if (screen.orientation && screen.orientation.lock) {
+                    screen.orientation.lock('landscape').catch(error => {
+                        console.log('Orientation lock failed: ', error);
+                    });
+                } else if (screen.lockOrientation) {
+                    screen.lockOrientation('landscape');
+                } else if (screen.mozLockOrientation) {
+                    screen.mozLockOrientation('landscape');
+                } else if (screen.msLockOrientation) {
+                    screen.msLockOrientation('landscape');
+                }
+            }
+
+            function unlockOrientation() {
+                if (screen.orientation && screen.orientation.unlock) {
+                    screen.orientation.unlock();
+                } else if (screen.unlockOrientation) {
+                    screen.unlockOrientation();
+                } else if (screen.mozUnlockOrientation) {
+                    screen.mozUnlockOrientation();
+                } else if (screen.msUnlockOrientation) {
+                    screen.msUnlockOrientation();
+                }
+            }
+
+            // Fullscreen change handler
+            function handleFullscreenChange() {
+                if (document.fullscreenElement) {
+                    // Entered fullscreen - lock to landscape
+                    lockOrientation();
+                    document.documentElement.classList.add('fullscreen-active');
+                } else {
+                    // Exited fullscreen - unlock orientation
+                    unlockOrientation();
+                    document.documentElement.classList.remove('fullscreen-active');
+                }
+            }
+
+            // Add event listeners for fullscreen changes
+            document.addEventListener('fullscreenchange', handleFullscreenChange);
+            document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+            document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+            document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+            // Add event listener for orientation changes
+            window.addEventListener('orientationchange', function() {
+                if (window.orientation === 90 || window.orientation === -90) {
+                    document.documentElement.classList.add('landscape');
+                } else {
+                    document.documentElement.classList.remove('landscape');
+                }
+            });
+
+            function initializePlayer(streamUrl, channelName, posterUrl) {
+                showLoading(true);
+                
+                // Update the poster image if provided
+                if (posterUrl) {
+                    videoPoster.src = posterUrl;
+                    videoPoster.classList.remove('hidden');
+                }
+                
+                // Check if ExoPlayer is available
+                if (window.ExoPlayer) {
+                    if (player) {
+                        // If player already exists, just change the source
+                        player.load(streamUrl);
+                    } else {
+                        player = new ExoPlayer(videoElement);
+                        
+                        // Configure the player
+                        const config = {
+                            streaming: {
+                                buffering: {
+                                    minBufferMs: 15000,
+                                    maxBufferMs: 30000,
+                                    bufferForPlaybackMs: 2500,
+                                    bufferForPlaybackAfterRebufferMs: 5000
+                                }
+                            }
+                        };
+                        
+                        player.configure(config);
+                        player.load(streamUrl);
+                    }
+                    
+                    // Update the video title
+                    if (channelName) {
+                        videoTitle.textContent = channelName;
+                    }
+                    
+                    // Set up event listeners if not already set
+                    if (!playPauseBtn._listenerSet) {
+                        setupEventListeners();
+                        playPauseBtn._listenerSet = true;
+                    }
+                } else {
+                    console.error('ExoPlayer is not available');
+                    // Fallback to HTML5 video if ExoPlayer fails
+                    videoElement.src = streamUrl;
+                    if (channelName) {
+                        videoTitle.textContent = channelName;
+                    }
+                    if (!playPauseBtn._listenerSet) {
+                        setupEventListeners();
+                        playPauseBtn._listenerSet = true;
+                    }
+                }
+                
+                currentVideoUrl = streamUrl;
+            }
+            
+            function setupEventListeners() {
+                // Play/Pause button
+                playPauseBtn.addEventListener('click', togglePlayPause);
+                
+                // Rewind 10 seconds
+                rewindBtn.addEventListener('click', () => {
+                    seekRelative(-10);
+                });
+                
+                // Forward 10 seconds
+                forwardBtn.addEventListener('click', () => {
+                    seekRelative(10);
+                });
+                
+                // Progress bar interaction
+                progressBar.addEventListener('input', () => {
+                    isSeeking = true;
+                    updateTimeDisplay(progressBar.value);
+                });
+                
+                progressBar.addEventListener('change', () => {
+                    if (player) {
+                        const duration = player.getDuration();
+                        const seekTime = (progressBar.value / 100) * duration;
+                        player.seekTo(seekTime);
+                    } else {
+                        videoElement.currentTime = (progressBar.value / 100) * videoElement.duration;
+                    }
+                    isSeeking = false;
+                });
+                
+                // Fullscreen button
+                fullscreenBtn.addEventListener('click', toggleFullscreen);
+                
+                // Settings panel
+                settingsBtn.addEventListener('click', toggleSettingsPanel);
+                closeSettings.addEventListener('click', toggleSettingsPanel);
+                
+                // Playback speed change
+                speedSelect.addEventListener('change', () => {
+                    const speed = parseFloat(speedSelect.value);
+                    if (player) {
+                        player.setPlaybackSpeed(speed);
+                    } else {
+                        videoElement.playbackRate = speed;
+                    }
+                });
+                
+                // Quality change (this would need actual implementation based on available streams)
+                qualitySelect.addEventListener('change', () => {
+                    const quality = qualitySelect.value;
+                    console.log('Quality changed to:', quality);
+                    // In a real implementation, you would switch tracks here
+                });
+                
+                // Player events
+                if (player) {
+                    // ExoPlayer events
+                    player.addEventListener('stateChanged', (event) => {
+                        handlePlayerStateChange(event.state);
+                    });
+                    
+                    player.addEventListener('error', (error) => {
+                        console.error('Player error:', error);
+                        showLoading(false);
+                        showBuffering(false);
+                    });
+                    
+                    player.addEventListener('buffering', (event) => {
+                        showBuffering(event.buffering);
+                    });
+                } else {
+                    // HTML5 video events
+                    videoElement.addEventListener('play', () => {
+                        isPlaying = true;
+                        updatePlayPauseButton();
+                        videoPoster.classList.add('hidden');
+                    });
+                    
+                    videoElement.addEventListener('pause', () => {
+                        isPlaying = false;
+                        updatePlayPauseButton();
+                    });
+                    
+                    videoElement.addEventListener('waiting', () => {
+                        showBuffering(true);
+                    });
+                    
+                    videoElement.addEventListener('playing', () => {
+                        showBuffering(false);
+                    });
+                    
+                    videoElement.addEventListener('canplay', () => {
+                        showLoading(false);
+                    });
+                    
+                    videoElement.addEventListener('error', () => {
+                        showLoading(false);
+                        showBuffering(false);
+                        console.error('Video error:', videoElement.error);
+                    });
+                    
+                    videoElement.addEventListener('timeupdate', updateProgress);
+                    videoElement.addEventListener('durationchange', updateDuration);
+                }
+                
+                // Mouse movement for controls visibility
+                videoElement.addEventListener('mousemove', showControls);
+                videoElement.addEventListener('click', togglePlayPause);
+                
+                // Hide controls when not interacting
+                hideControlsAfterTimeout();
+                
+                // Channel buttons event listeners
+                channelButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const streamUrl = this.getAttribute('data-src');
+                        const channelName = this.getAttribute('data-title');
+                        const posterUrl = this.getAttribute('data-poster');
+                        initializePlayer(streamUrl, channelName, posterUrl);
+                        
+                        // Auto-play the new stream
+                        if (player) {
+                            player.play();
+                        } else {
+                            videoElement.play().catch(e => console.error('Play error:', e));
+                        }
+                    });
+                });
+            }
+            
+            function handlePlayerStateChange(state) {
+                switch (state) {
+                    case ExoPlayer.State.IDLE:
+                        console.log('Player is idle');
+                        showLoading(false);
+                        showBuffering(false);
+                        break;
+                    case ExoPlayer.State.BUFFERING:
+                        console.log('Player is buffering');
+                        showBuffering(true);
+                        break;
+                    case ExoPlayer.State.READY:
+                        console.log('Player is ready');
+                        showLoading(false);
+                        showBuffering(false);
+                        updateDuration();
+                        break;
+                    case ExoPlayer.State.ENDED:
+                        console.log('Player ended');
+                        isPlaying = false;
+                        updatePlayPauseButton();
+                        showLoading(false);
+                        showBuffering(false);
+                        videoPoster.classList.remove('hidden');
+                        break;
+                    case ExoPlayer.State.PLAYING:
+                        console.log('Player is playing');
+                        isPlaying = true;
+                        updatePlayPauseButton();
+                        showLoading(false);
+                        showBuffering(false);
+                        videoPoster.classList.add('hidden');
+                        break;
+                    case ExoPlayer.State.PAUSED:
+                        console.log('Player is paused');
+                        isPlaying = false;
+                        updatePlayPauseButton();
+                        showLoading(false);
+                        showBuffering(false);
+                        break;
+                }
+            }
+            
+            function togglePlayPause() {
+                if (player) {
+                    if (isPlaying) {
+                        player.pause();
+                    } else {
+                        player.play();
+                        videoPoster.classList.add('hidden');
+                    }
+                } else {
+                    if (videoElement.paused) {
+                        videoElement.play().catch(e => console.error('Play error:', e));
+                        videoPoster.classList.add('hidden');
+                    } else {
+                        videoElement.pause();
+                    }
+                }
+            }
+            
+            function updatePlayPauseButton() {
+                if (isPlaying) {
+                    playPauseBtn.innerHTML = '<i class="material-icons">pause</i>';
+                } else {
+                    playPauseBtn.innerHTML = '<i class="material-icons">play_arrow</i>';
+                }
+            }
+            
+            function seekRelative(seconds) {
+                if (player) {
+                    const currentTime = player.getCurrentPosition();
+                    player.seekTo(currentTime + seconds * 1000);
+                } else {
+                    videoElement.currentTime += seconds;
+                }
+            }
+            
+            function updateProgress() {
+                if (isSeeking) return;
+                
+                let currentTime, duration;
+                
+                if (player) {
+                    currentTime = player.getCurrentPosition() / 1000; // convert to seconds
+                    duration = player.getDuration() / 1000;
+                } else {
+                    currentTime = videoElement.currentTime;
+                    duration = videoElement.duration;
+                }
+                
+                if (duration > 0) {
+                    const progressPercent = (currentTime / duration) * 100;
+                    progressBar.value = progressPercent;
+                    updateTimeDisplay(progressPercent);
+                }
+            }
+            
+            function updateDuration() {
+                let duration;
+                
+                if (player) {
+                    duration = player.getDuration() / 1000; // convert to seconds
+                } else {
+                    duration = videoElement.duration;
+                }
+                
+                if (isFinite(duration)) {
+                    durationDisplay.textContent = formatTime(duration);
+                }
+            }
+            
+            function updateTimeDisplay(progressPercent) {
+                let duration;
+                
+                if (player) {
+                    duration = player.getDuration() / 1000; // convert to seconds
+                } else {
+                    duration = videoElement.duration;
+                }
+                
+                if (isFinite(duration)) {
+                    const currentTime = (progressPercent / 100) * duration;
+                    currentTimeDisplay.textContent = formatTime(currentTime);
+                }
+            }
+            
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = Math.floor(seconds % 60);
+                return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+            }
+            
+            function toggleFullscreen() {
+                if (!document.fullscreenElement) {
+                    // Enter fullscreen
+                    if (videoElement.requestFullscreen) {
+                        videoElement.requestFullscreen().then(() => {
+                            lockOrientation();
+                        }).catch(err => {
+                            console.error('Fullscreen error:', err);
+                        });
+                    } else if (videoElement.webkitRequestFullscreen) {
+                        videoElement.webkitRequestFullscreen();
+                        lockOrientation();
+                    } else if (videoElement.msRequestFullscreen) {
+                        videoElement.msRequestFullscreen();
+                        lockOrientation();
+                    }
+                } else {
+                    // Exit fullscreen
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen().then(() => {
+                            unlockOrientation();
+                        });
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                        unlockOrientation();
+                    } else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                        unlockOrientation();
+                    }
+                }
+            }
+            
+            function toggleSettingsPanel() {
+                settingsPanel.classList.toggle('active');
+            }
+            
+            function showLoading(show) {
+                if (show) {
+                    loadingSpinner.style.display = 'block';
+                } else {
+                    loadingSpinner.style.display = 'none';
+                }
+            }
+            
+            function showBuffering(show) {
+                if (show) {
+                    bufferingIndicator.style.display = 'block';
+                } else {
+                    bufferingIndicator.style.display = 'none';
+                }
+            }
+            
+            function showControls() {
+                playerOverlay.classList.add('active');
+                clearTimeout(hideControlsTimeout);
+                hideControlsAfterTimeout();
+            }
+            
+            function hideControlsAfterTimeout() {
+                hideControlsTimeout = setTimeout(() => {
+                    if (isPlaying) {
+                        playerOverlay.classList.remove('active');
+                    }
+                }, 3000);
+            }
+            
+            // Initialize the player with the first channel by default
+            if (channelButtons.length > 0) {
+                const firstButton = channelButtons[0];
+                const streamUrl = firstButton.getAttribute('data-src');
+                const channelName = firstButton.getAttribute('data-title');
+                const posterUrl = firstButton.getAttribute('data-poster');
+                initializePlayer(streamUrl, channelName, posterUrl);
+            }
+            
+            // Update progress periodically
+            setInterval(updateProgress, 500);
+        });
+    </script>
+</body>
+</html>
